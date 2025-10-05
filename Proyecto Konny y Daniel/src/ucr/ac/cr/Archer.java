@@ -9,11 +9,11 @@ public class Archer extends Hero {
 
     @Override
     public boolean move(int newRow, int newCol, int boardSize) {
-        if (Math.abs(newRow - row) <= 1 && Math.abs(newCol - col) <= 1) {
+        if (Math.abs(newRow - getRow()) <= 1 && Math.abs(newCol - getCol()) <= 1) {
             if (isInsideBoard(newRow, newCol, boardSize)) {
-                row = newRow;
-                col = newCol;
-                moves++;
+                setRow(newRow);
+                setCol(newCol);
+                addMove();
                 return true;
             }
         }
@@ -30,8 +30,11 @@ public class Archer extends Hero {
         }
 
          target.takeDamage(damage);
-        this.damageDealt = damageDealt + damage;
-        if (!target.isAlive()) kills++;
+         addDamageDealt(damage);
+        if (!target.isAlive()){
+            addKill();
+        }
+
 
         System.out.println("🏹 Arquero dispara y hace " + damage + " de daño!");
     }

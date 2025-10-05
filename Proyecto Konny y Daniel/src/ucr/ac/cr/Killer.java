@@ -14,11 +14,11 @@ public class Killer extends Hero {
 
     @Override
     public boolean move(int newRow, int newCol, int boardSize) {
-        if (Math.abs(newRow - row) == 2 && Math.abs(newCol - col) == 2) {
+        if (Math.abs(newRow - getRow()) == 2 && Math.abs(newCol - getCol()) == 2) {
             if (isInsideBoard(newRow, newCol, boardSize)) {
-                row = newRow;
-                col = newCol;
-                moves++;
+                setRow(newRow);
+                setCol(newCol);
+                addMove();
                 return true;
             }
         }
@@ -39,11 +39,11 @@ public class Killer extends Hero {
             }
 
             target.takeDamage(damage);
-            this.damageDealt = damageDealt + damage;
+            addDamageDealt(damage);
             totaldamage = totaldamage + damage;
 
             if (!target.isAlive()){
-                kills++;
+                addKill();
                 break;
             }
         }

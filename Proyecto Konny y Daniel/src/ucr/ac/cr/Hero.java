@@ -1,14 +1,14 @@
 package ucr.ac.cr;
 
 public abstract class Hero {
-    protected int hp;
-    protected int row;
-    protected int col;
-    protected char symbol;
-    protected int damageDealt;
-    protected int damageTaken;
-    protected int kills;
-    protected int moves;
+    private int hp;
+    private int row;
+    private int col;
+    private char symbol;
+    private int damageDealt;
+    private int damageTaken;
+    private int kills;
+    private int moves;
 
     public Hero(int hp, char symbol) {
         this.hp = hp;
@@ -28,16 +28,43 @@ public abstract class Hero {
         return this.hp > 0;
     }
 
-    public char getSymbol()
-    { return symbol; }
-    public int getRow()
-    { return row; }
-    public int getCol()
-    { return col; }
-    public int getHp()
-    { return hp; }
+    public int getHp() {
+        return hp;
+    }
+    public int getRow() {
+        return row;
+    }
+    public int getCol() {
+        return col;
+    }
+    public char getSymbol() {
+        return symbol;
+    }
+    public int getDamageDealt() {
+        return damageDealt;
+    }
+    public int getDamageTaken() {
+        return damageTaken;
+    }
+    public int getKills() {
+        return kills;
+    }
+    public int getMoves() {
+        return moves;
+    }
 
-    protected boolean isInsideBoard(int r, int c, int size) {
+    public void setRow(int row) {
+        this.row = row;
+    }
+    public void setCol(int col) {
+        this.col = col;
+    }
+
+    public void addMove() { this.moves++; }
+    public void addDamageDealt(int dmg) { this.damageDealt = damageDealt + dmg; }
+    public void addKill() { this.kills++; }
+
+    boolean isInsideBoard(int r, int c, int size) {
         return r >= 0 && r < size && c >= 0 && c < size;
     }
 }
