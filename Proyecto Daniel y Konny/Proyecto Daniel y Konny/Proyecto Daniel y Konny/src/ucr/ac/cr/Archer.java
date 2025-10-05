@@ -7,7 +7,7 @@ public class Archer extends Hero{
 
     @Override
     public void move() {
-
+        System.out.println("hola");
     }
 
     @Override
