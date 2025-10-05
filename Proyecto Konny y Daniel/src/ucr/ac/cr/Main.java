@@ -5,7 +5,7 @@ public class Main extends Board {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         boolean flag;
-        //xd
+        //xd hello
         showMainMenu();
         int option = sc.nextInt();
 
@@ -55,8 +55,6 @@ public class Main extends Board {
                     System.out.println("Los heroes entraron a la arena de juego");
                     showBoard(size); //muestra el tablero con los heroes ubicados
                 }
-
-                //...
 
                 break;
             case (2):
@@ -128,7 +126,3 @@ public class Main extends Board {
                 "S = Asesino");
     }
 }
-
-//como se diferencian los heroes en el tablero? //como aplicar colores?
-//como hacer que el jugador decida donde van los heroes manualmente?
-//pasos a seguir
