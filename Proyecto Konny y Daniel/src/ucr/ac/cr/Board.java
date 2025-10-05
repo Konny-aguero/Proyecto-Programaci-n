@@ -1,14 +1,12 @@
 package ucr.ac.cr;
 
 public class Board {
-    static final String EMPTY = ".";
+    static final String EMPTY = "[ ]";
     private static final String WIZARD = "M";
     private static final String WARRIOR = "G";
     private static final String ARCHER = "A";
     private static final String TANK = "T";
     private static final String KILLER = "S";
-
-
 
 //    public static final String COLOR_RED = "\u001B[31m";
 //    public static final String COLOR_BLUE = "\u001B[34m";
@@ -47,7 +45,11 @@ public class Board {
     }
 
     static void automaticHeroesInitialization(String[][] matrix, int size){
-        matrix[0][0] = WARRIOR; matrix[0][1] = ARCHER; matrix[0][2] = WIZARD; matrix[0][3] = TANK; matrix[0][4] = KILLER;
-        matrix[size-1][0] = WARRIOR; matrix[size-1][1] = ARCHER; matrix[size-1][2] = WIZARD; matrix[size-1][3] = TANK; matrix[size-1][4] = KILLER;
+        matrix[0][0] = "["+WARRIOR+"]"; matrix[0][1] = "["+ARCHER+"]"; matrix[0][2] = "["+WIZARD+"]"; matrix[0][3] = "["+TANK+"]"; matrix[0][4] = "["+KILLER+"]";
+        matrix[size-1][0] = "["+WARRIOR+"]"; matrix[size-1][1] = "["+ARCHER+"]"; matrix[size-1][2] = "["+WIZARD+"]"; matrix[size-1][3] = "["+TANK+"]"; matrix[size-1][4] = "["+KILLER+"]";
     }
+//    static void automaticHeroesInitialization(String[][] matrix, int size){
+//        matrix[0][0] = WARRIOR; matrix[0][1] = ARCHER; matrix[0][2] = WIZARD; matrix[0][3] = TANK; matrix[0][4] = KILLER;
+//        matrix[size-1][0] = WARRIOR; matrix[size-1][1] = ARCHER; matrix[size-1][2] = WIZARD; matrix[size-1][3] = TANK; matrix[size-1][4] = KILLER;
+//    }
 }

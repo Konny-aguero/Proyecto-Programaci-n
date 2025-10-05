@@ -4,25 +4,30 @@ import java.util.Scanner;
 public class Main extends Board {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        boolean flag;
-        //xd hello
+        int size = 1;
+        boolean flag = true;
         showMainMenu();
         int option = sc.nextInt();
 
         switch (option) {
             case (1):
-                System.out.print("digite el tamaño del tablero (5-20): ");
-                int size = sc.nextInt();
-                if (size >= 5 && size <= 20) {
-                    initBoard(size); //inicializa el tablero con puntos
-                    System.out.println();
-                    System.out.println("Usted selecciono el siguiente tablero:");
-                    showBoard(size); //muestra el tablero inicializado
-                    System.out.println();
-                } else {
-                    System.out.println("tamaño no valido");
-                }
 
+                while (flag){
+                    System.out.print("digite el tamaño del tablero (5-20): ");
+                    size = sc.nextInt();
+
+                    if (size >= 5 && size <= 20) {
+                        initBoard(size); //inicializa el tablero con puntos
+                        System.out.println();
+                        System.out.println("Usted selecciono el siguiente tablero:");
+                        showBoard(size); //muestra el tablero inicializado
+                        System.out.println();
+                        flag = false;
+
+                    } else {
+                        System.out.println("tamaño no valido");
+                    }
+                }
 
                 Players player1 = new Players();
                 System.out.println("Digite el nombre del ejercito del jugador 1");
@@ -127,6 +132,7 @@ public class Main extends Board {
     }
 }
 
+//Cambiar la forma en la que se inizializan los heroes
 //bucle para confirmar tamano del tablero
 //opcion para colocar heroes manualmente (usar el array remplazando los ya usados por un null)
 //crear constructores necesarios
