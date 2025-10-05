@@ -126,3 +126,8 @@ public class Main extends Board {
                 "S = Asesino");
     }
 }
+
+//bucle para confirmar tamano del tablero
+//opcion para colocar heroes manualmente (usar el array remplazando los ya usados por un null)
+//crear constructores necesarios
+//crear las funciones de movimiento
