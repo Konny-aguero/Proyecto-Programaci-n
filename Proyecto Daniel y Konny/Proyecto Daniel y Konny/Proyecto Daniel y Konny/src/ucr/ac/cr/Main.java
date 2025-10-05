@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class Main extends Board {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        boolean flag;
         showMainMenu();
         int option = sc.nextInt();
 
@@ -11,18 +12,16 @@ public class Main extends Board {
             case (1):
                 System.out.print("digite el tamaño del tablero (5-20): ");
                 int size = sc.nextInt();
-//                if (size >= 5 || size <= 20) {
-//
-//                } else {
-//                    System.out.println("tamaño no valido");
-//                }
+                if (size >= 5 && size <= 20) {
+                    initBoard(size); //inicializa el tablero con puntos
+                    System.out.println();
+                    System.out.println("Usted selecciono el siguiente tablero:");
+                    showBoard(size); //muestra el tablero inicializado
+                    System.out.println();
+                } else {
+                    System.out.println("tamaño no valido");
+                }
 
-                String[][] board = new String[size][size];
-                initBoard(board); //inicializa el tablero con puntos
-                System.out.println();
-                System.out.println("Usted selecciono el siguiente tablero:");
-                showBoard(board,size); //muestra el tablero inicializado
-                System.out.println();
 
                 Players player1 = new Players();
                 System.out.println("Digite el nombre del ejercito del jugador 1");
@@ -53,7 +52,7 @@ public class Main extends Board {
                 if(option1==2){
                     automaticHeroesInitialization(board,size); //coloca los heroes automaticamente
                     System.out.println("Los heroes entraron a la arena de juego");
-                    showBoard(board,size); //muestra el tablero con los heroes ubicados
+                    showBoard(size); //muestra el tablero con los heroes ubicados
                 }
 
                 //...
@@ -122,10 +121,10 @@ public class Main extends Board {
         System.out.println();
         System.out.println("Recordar la sintaxis de los heroes:");
         System.out.println("G = Guerrero\n" +
-                           "A = Arquero\n" +
-                           "M = Mago\n" +
-                           "T = Tanque\n" +
-                           "S = Asesino");
+                "A = Arquero\n" +
+                "M = Mago\n" +
+                "T = Tanque\n" +
+                "S = Asesino");
     }
 }
 

@@ -21,23 +21,25 @@ public class Board {
 //        System.out.println(color + texto + COLOR_RESET);
 //    }
 
-    static void initBoard(String[][] matrix) {
-        for (int row = 0; row < matrix.length; row++) {
-            for (int column = 0; column < matrix.length; column++) {
-                matrix[row][column] = EMPTY;
+    static String[][] board;
+    static void initBoard(int size) {
+        board = new String[size][size];
+        for (int row = 0; row < board.length; row++) {
+            for (int column = 0; column < board.length; column++) {
+                board[row][column] = EMPTY;
             }
         }
     }
 
-    static void showBoard(String[][] matrix, int size){
+    static void showBoard(int size){
         for (int i = 1; i<=size; i++){
             System.out.print("\t"+i);
         }
         System.out.println();
-        for (int row = 0; row < matrix.length; row++) {
+        for (int row = 0; row < board.length; row++) {
             System.out.print(row+1+"\t");
-            for (int column = 0; column < matrix.length; column++) {
-                System.out.print(matrix[row][column]);
+            for (int column = 0; column < board.length; column++) {
+                System.out.print(board[row][column]);
                 System.out.print("\t");
             }
             System.out.println();
