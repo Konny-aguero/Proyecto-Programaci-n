@@ -8,9 +8,10 @@ package ucr.ac.cr;
 import java.util.Random;
 
 public class Tank extends Hero {
-    public Tank(int hp) {
-        super(hp, 'T');
+    public Tank(int hp, char symbol) {
+        super(hp, symbol);
     }
+
 
     @Override
     public boolean move(int newRow, int newCol, int boardSize) {

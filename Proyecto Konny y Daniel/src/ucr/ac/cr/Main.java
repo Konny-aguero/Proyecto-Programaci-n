@@ -33,21 +33,21 @@ public class Main extends Board {
                 System.out.println("Digite el nombre del ejercito del jugador 1");
                 player1.setNameArmy(sc.next()); //asigna el nombre del ejercito
                 Hero[] hero1 = new Hero[5]; //5 heroes por persona
-                hero1[0] = new Archer(10);
-                hero1[1] = new Warrior(15);
-                hero1[2] = new Wizard(8);
-                hero1[3] = new Tank(20);
-                hero1[4] = new Killer(9);
+                hero1[0] = new Archer(10, 'A');
+                hero1[1] = new Warrior(15, 'G');
+                hero1[2] = new Wizard(8, 'M');
+                hero1[3] = new Tank(20, 'T');
+                hero1[4] = new Killer(9, 'S');
 
                 Players player2 = new Players();
                 System.out.println("Digite el nombre del ejercito del jugador 2");
                 player2.setNameArmy(sc.next()); //asigna el nombre del ejercito
                 Hero[] hero2 = new Hero[5]; //5 heroes por persona
-                hero2[0] = new Archer(10);
-                hero2[1] = new Warrior(15);
-                hero2[2] = new Wizard(8);
-                hero2[3] = new Tank(20);
-                hero2[4] = new Killer(9);
+                hero2[0] = new Archer(10, 'A');
+                hero2[1] = new Warrior(15, 'G');
+                hero2[2] = new Wizard(8, 'M');
+                hero2[3] = new Tank(20, 'T');
+                hero2[4] = new Killer(9, 'S');
 
                 System.out.println();
                 System.out.println("1.Colocar heroes manualmente"); //pendiente de programar
@@ -56,7 +56,7 @@ public class Main extends Board {
                 int option1 = sc.nextInt(); //decide si quiere colocar los heroes manualmente o automatico
 
                 if(option1==2){
-                    automaticHeroesInitialization(board,size); //coloca los heroes automaticamente
+                    automaticHeroesInitialization(board,size,hero1, hero2); //coloca los heroes automaticamente
                     System.out.println("Los heroes entraron a la arena de juego");
                     showBoard(size); //muestra el tablero con los heroes ubicados
                 }

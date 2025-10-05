@@ -29,42 +29,22 @@ public abstract class Hero {
     }
 
     public int getHp() {
-        return hp;
-    }
-    public int getRow() {
-        return row;
-    }
-    public int getCol() {
-        return col;
-    }
-    public char getSymbol() {
-        return symbol;
-    }
-    public int getDamageDealt() {
-        return damageDealt;
-    }
-    public int getDamageTaken() {
-        return damageTaken;
-    }
-    public int getKills() {
-        return kills;
-    }
-    public int getMoves() {
-        return moves;
-    }
+        return hp; }
+    public int getRow() { return row; }
+    public int getCol() { return col; }
+    public char getSymbol() { return symbol; }
+    public int getDamageDealt() { return damageDealt; }
+    public int getDamageTaken() { return damageTaken; }
+    public int getKills() { return kills; }
+    public int getMoves() { return moves; }
 
-    public void setRow(int row) {
-        this.row = row;
-    }
-    public void setCol(int col) {
-        this.col = col;
-    }
+    public void setRow(int row) { this.row = row; }
+    public void setCol(int col) { this.col = col; }
 
     public void addMove() { this.moves++; }
-    public void addDamageDealt(int dmg) { this.damageDealt = damageDealt + dmg; }
+    public void addDamageDealt(int dmg) { this.damageDealt += dmg; }
     public void addKill() { this.kills++; }
-
-    boolean isInsideBoard(int r, int c, int size) {
+    protected boolean isInsideBoard(int r, int c, int size) {
         return r >= 0 && r < size && c >= 0 && c < size;
     }
 }

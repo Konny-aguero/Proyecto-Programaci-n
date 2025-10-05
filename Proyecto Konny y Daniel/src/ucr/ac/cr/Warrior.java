@@ -8,8 +8,10 @@ package ucr.ac.cr;
 import java.util.Random;
 
 public class Warrior extends Hero {
-    public Warrior(int hp) {
-        super(hp, 'G');
+
+
+    public Warrior(int hp, char symbol) {
+        super(hp, symbol);
     }
 
     @Override
