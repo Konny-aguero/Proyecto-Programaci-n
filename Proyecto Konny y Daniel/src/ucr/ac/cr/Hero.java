@@ -1,7 +1,7 @@
 package ucr.ac.cr;
 
 public abstract class Hero {
-    protected int hp;
+    private int hp;
     protected int row;
     protected int col;
     protected char symbol;
@@ -28,14 +28,9 @@ public abstract class Hero {
         return this.hp > 0;
     }
 
-    public char getSymbol()
-    { return symbol; }
-    public int getRow()
-    { return row; }
-    public int getCol()
-    { return col; }
-    public int getHp()
-    { return hp; }
+    public char getSymbol() {
+        return symbol;
+    }
 
     protected boolean isInsideBoard(int r, int c, int size) {
         return r >= 0 && r < size && c >= 0 && c < size;

@@ -44,12 +44,9 @@ public class Board {
         }
     }
 
-    static void automaticHeroesInitialization(String[][] matrix, int size){
-        matrix[0][0] = "["+WARRIOR+"]"; matrix[0][1] = "["+ARCHER+"]"; matrix[0][2] = "["+WIZARD+"]"; matrix[0][3] = "["+TANK+"]"; matrix[0][4] = "["+KILLER+"]";
-        matrix[size-1][0] = "["+WARRIOR+"]"; matrix[size-1][1] = "["+ARCHER+"]"; matrix[size-1][2] = "["+WIZARD+"]"; matrix[size-1][3] = "["+TANK+"]"; matrix[size-1][4] = "["+KILLER+"]";
+    static void automaticHeroesInitialization(String[][] board, int size, Hero[] hero1, Hero[] hero2){
+        board[0][0] = "["+hero1[0].getSymbol()+"]"; board[0][1] = "["+hero1[1].getSymbol()+"]"; board[0][2] = "["+hero1[2].getSymbol()+"]"; board[0][3] = "["+hero1[3].getSymbol()+"]"; board[0][4] = "["+hero1[4].getSymbol()+"]";
+
+        board[size-1][0] = "["+hero2[0].getSymbol()+"]"; board[size-1][1] = "["+hero2[1].getSymbol()+"]"; board[size-1][2] = "["+hero2[2].getSymbol()+"]"; board[size-1][3] = "["+hero2[3].getSymbol()+"]"; board[size-1][4] = "["+hero2[4].getSymbol()+"]";
     }
-//    static void automaticHeroesInitialization(String[][] matrix, int size){
-//        matrix[0][0] = WARRIOR; matrix[0][1] = ARCHER; matrix[0][2] = WIZARD; matrix[0][3] = TANK; matrix[0][4] = KILLER;
-//        matrix[size-1][0] = WARRIOR; matrix[size-1][1] = ARCHER; matrix[size-1][2] = WIZARD; matrix[size-1][3] = TANK; matrix[size-1][4] = KILLER;
-//    }
 }

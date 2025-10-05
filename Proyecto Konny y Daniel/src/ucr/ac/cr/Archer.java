@@ -3,8 +3,10 @@ package ucr.ac.cr;
 import java.util.Random;
 
 public class Archer extends Hero {
-    public Archer(int hp) {
-        super(hp, 'A'); // llamamos al constructor de Hero con HP y símbolo
+
+
+    public Archer(int hp, char symbol) {
+        super(hp, symbol);
     }
 
     @Override
