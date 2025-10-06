@@ -16,31 +16,40 @@ public class Warrior extends Hero {
 
     @Override
     public boolean move(int newRow, int newCol, int boardSize) {
-        // El arquero puede mover 1 casilla en cualquier dirección
-        if (Math.abs(newRow - row) <= 1 && Math.abs(newCol - col) <= 1) {
+        int rowdifference = Math.abs(newRow - getRow());
+        int columndifference = Math.abs(newCol - getCol());
+
+        if (rowdifference == 1 && columndifference == 0 || columndifference == 1 && rowdifference == 0) {
             if (isInsideBoard(newRow, newCol, boardSize)) {
-                row = newRow;
-                col = newCol;
-                moves++;
+                setRow(newRow);
+                setCol(newCol);
+                addMove();
+                System.out.println("⚔️ Guerrero se movió a (" + newRow + "," + newCol + ")");
                 return true;
             }
         }
+
+        System.out.println("Movimiento inválido para el Guerrero!");
         return false;
     }
 
     @Override
     public void attack(Hero target) {
-        Random rand = new Random();
-        int damage = 5 + rand.nextInt(3); // 5 + rand(0–2)
+        int rowDifference = Math.abs(target.getRow() - getRow());
+        int colDifference = Math.abs(target.getCol() - getCol());
 
-        if (target instanceof Tank) {
-            damage = damage + 2; // ventaja contra tanques
+        if ((rowDifference == 1 && colDifference == 0) || (rowDifference == 0 && colDifference == 1)) {
+            Random rand = new Random();
+            int damage = 6 + rand.nextInt(3);
+
+            target.takeDamage(damage);
+            addDamageDealt(damage);
+
+            if (!target.isAlive()) addKill();
+
+            System.out.println("⚔️ Guerrero ataca y hace " + damage + " de daño!");
+        } else {
+            System.out.println("Objetivo fuera de rango para el Guerrero!");
         }
-
-        target.takeDamage(damage);
-        this.damageDealt += damage;
-        if (!target.isAlive()) kills++;
-
-        System.out.println("🏹 Arquero dispara y hace " + damage + " de daño!");
     }
 }
