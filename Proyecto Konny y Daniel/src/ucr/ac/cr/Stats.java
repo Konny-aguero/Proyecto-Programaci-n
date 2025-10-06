@@ -1,9 +1,18 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package ucr.ac.cr;
 
 public class Stats {
+
+    public static void showStats(Hero hero) {
+        System.out.println("=== Estadísticas del héroe ===");
+        System.out.println("Tipo: " + hero.getClass().getSimpleName());
+        System.out.println("Símbolo: " + hero.getSymbol());
+        System.out.println("HP actual: " + hero.getHp());
+        System.out.println("Posición: (" + hero.getRow() + "," + hero.getCol() + ")");
+        System.out.println("Daño infligido: " + hero.getDamageDealt());
+        System.out.println("Daño recibido: " + hero.getDamageTaken());
+        System.out.println("Movimientos realizados: " + hero.getMoves());
+        System.out.println("Enemigos eliminados: " + hero.getKills());
+        System.out.println("=============================");
+    }
+
 }

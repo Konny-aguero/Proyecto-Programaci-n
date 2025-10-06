@@ -21,9 +21,12 @@ public class Killer extends Hero {
                 setRow(newRow);
                 setCol(newCol);
                 addMove();
+                System.out.println("🗡️ Asesino se movió a (" + newRow + "," + newCol + ")");
                 return true;
             }
         }
+
+        System.out.println("Movimiento inválido para el Asesino!");
         return false;
     }
 
@@ -44,13 +47,16 @@ public class Killer extends Hero {
             addDamageDealt(damage);
             totaldamage = totaldamage + damage;
 
-            if (!target.isAlive()){
+            if (!target.isAlive()) {
                 addKill();
+                System.out.println("🗡️ Asesino ataca" + totaldamage + " de daño a " + target.getSymbol() + "!");
                 break;
+
+            } else {
+                System.out.println("❌ Objetivo fuera de alcance del asesino.");
             }
         }
 
-
-        System.out.println("🗡️ Asesino ataca y hace " + totaldamage + " de daño en total!");
     }
 }
+//falta penalizacion por ser debil

@@ -19,7 +19,7 @@ public abstract class Hero {
     public abstract void attack(Hero target);
 
     public void takeDamage(int dmg) {
-        this.hp -= dmg;
+        this.hp = hp - dmg;
         if (this.hp < 0) this.hp = 0;
         this.damageTaken += dmg;
     }
@@ -29,17 +29,36 @@ public abstract class Hero {
     }
 
     public int getHp() {
-        return hp; }
-    public int getRow() { return row; }
-    public int getCol() { return col; }
-    public char getSymbol() { return symbol; }
-    public int getDamageDealt() { return damageDealt; }
-    public int getDamageTaken() { return damageTaken; }
-    public int getKills() { return kills; }
-    public int getMoves() { return moves; }
+        return hp;
+    }
+    public int getRow() {
+        return row;
+    }
+    public int getCol() {
+        return col;
+    }
+    public char getSymbol() {
+        return symbol;
+    }
+    public int getDamageDealt() {
+        return damageDealt;
+    }
+    public int getDamageTaken() {
+        return damageTaken;
+    }
+    public int getKills() {
+        return kills;
+    }
+    public int getMoves() {
+        return moves;
+    }
 
-    public void setRow(int row) { this.row = row; }
-    public void setCol(int col) { this.col = col; }
+    public void setRow(int row) {
+        this.row = row;
+    }
+    public void setCol(int col) {
+        this.col = col;
+    }
 
     public void addMove() { this.moves++; }
     public void addDamageDealt(int dmg) { this.damageDealt += dmg; }
