@@ -7,6 +7,11 @@ package ucr.ac.cr;
 
 public class Players {
     private String nameArmy;
+    private String playerName;
+
+    public Players(String playerName) {
+        this.playerName = playerName;
+    }
 
     public String getNameArmy() {
         return this.nameArmy;
@@ -15,4 +20,10 @@ public class Players {
     public void setNameArmy(String nameArmy) {
         this.nameArmy = nameArmy;
     }
+
+    public String getPlayerName() {
+        return this.playerName;
+    }
+
+
 }

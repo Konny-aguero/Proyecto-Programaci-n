@@ -29,8 +29,8 @@ public class Main extends Board {
                     }
                 }
 
-                Players player1 = new Players();
-                System.out.println("Digite el nombre del ejercito del jugador 1");
+                Players player1 = new Players("Player 1");
+                System.out.println("Digite el nombre del ejercito del jugador 1 (no se permiten espacios)");
                 player1.setNameArmy(sc.next()); //asigna el nombre del ejercito
                 Hero[] hero1 = new Hero[5]; //5 heroes por persona
                 hero1[0] = new Archer(10, 'A');
@@ -39,8 +39,8 @@ public class Main extends Board {
                 hero1[3] = new Tank(20, 'T');
                 hero1[4] = new Killer(9, 'S');
 
-                Players player2 = new Players();
-                System.out.println("Digite el nombre del ejercito del jugador 2");
+                Players player2 = new Players("Player 2");
+                System.out.println("Digite el nombre del ejercito del jugador 2 (no se permiten espacios)");
                 player2.setNameArmy(sc.next()); //asigna el nombre del ejercito
                 Hero[] hero2 = new Hero[5]; //5 heroes por persona
                 hero2[0] = new Archer(10, 'A');
@@ -50,16 +50,52 @@ public class Main extends Board {
                 hero2[4] = new Killer(9, 'S');
 
                 System.out.println();
-                System.out.println("1.Colocar heroes manualmente"); //pendiente de programar
-                System.out.println("2.Mantener posicion sugerida");
-                System.out.print("Selecciona una opción: ");
-                int option1 = sc.nextInt(); //decide si quiere colocar los heroes manualmente o automatico
+                System.out.println("COLOCACION DE HEROES EN EL TABLERO");
 
-                if(option1==2){
-                    automaticHeroesInitialization(board,size,hero1, hero2); //coloca los heroes automaticamente
-                    System.out.println("Los heroes entraron a la arena de juego");
-                    showBoard(size); //muestra el tablero con los heroes ubicados
+
+                while (!flag){
+                    System.out.println("1.Colocar heroes manualmente"); //pendiente de programar
+                    System.out.println("2.Mantener posicion sugerida");
+                    System.out.print("Selecciona una opción: ");
+                    int option1 = sc.nextInt(); //decide si quiere colocar los heroes manualmente o automatico
+
+                    if(option1 == 1){
+                        colocationHeroes(hero1, hero2, board, sc); //coloca los heroes manualmente
+                        flag = true;
+                    } else if (option1 == 2) {
+                        automaticHeroesInitialization(board ,size ,hero1, hero2); //coloca los heroes automaticamente
+                        System.out.println("Los heroes entraron a la arena de juego");
+                        showBoard(size); //muestra el tablero con los heroes ubicados
+                        flag = true;
+                    } else {
+                        System.out.println("Opcion invalida");
+                    }
                 }
+
+                System.out.println();
+                System.out.println("COMIENZA LA BATALLA");
+                System.out.println("Comienza el jugador: ");
+
+                String activePlayer;
+                if (Math.random() < 0.5) {
+                    activePlayer = player1.getPlayerName();
+                    System.out.println(activePlayer+ " con el ejercito: " + player1.getNameArmy());
+                } else {
+                    activePlayer = player2.getPlayerName();
+                    System.out.println(activePlayer+ " con el ejercito: " + player2.getNameArmy());
+                }
+
+                System.out.println();
+
+                //aqui empieza la batalla ----------------- TODO PENDIENTE -----------------
+                System.out.println("Turno del jugador: " + activePlayer + "(" + (activePlayer.equals(player1.getPlayerName()) ? player1.getNameArmy() : player2.getNameArmy()) + ")");
+                System.out.println("Seleccione una opción:");
+                //1. Mover héroe
+                //2. Atacar con héroe
+                //3. Ver estadisticas
+                //4. Pasar turno al otro jugador
+                //5. Retirada
+
 
                 break;
             case (2):
@@ -130,10 +166,5 @@ public class Main extends Board {
                 "T = Tanque\n" +
                 "S = Asesino");
     }
-}
 
-//Cambiar la forma en la que se inizializan los heroes
-//bucle para confirmar tamano del tablero
-//opcion para colocar heroes manualmente (usar el array remplazando los ya usados por un null)
-//crear constructores necesarios
-//crear las funciones de movimiento
+}
