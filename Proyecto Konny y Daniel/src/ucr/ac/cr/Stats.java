@@ -7,7 +7,7 @@ public class Stats {
         System.out.println("Tipo: " + hero.getClass().getSimpleName());
         System.out.println("Símbolo: " + hero.getSymbol());
         System.out.println("HP actual: " + hero.getHp());
-        System.out.println("Posición: (" + hero.getRow() + "," + hero.getCol() + ")");
+        System.out.println("Posición: (" + (hero.getRow()+1) + "," + (hero.getCol()+1) + ")");
         System.out.println("Daño infligido: " + hero.getDamageDealt());
         System.out.println("Daño recibido: " + hero.getDamageTaken());
         System.out.println("Movimientos realizados: " + hero.getMoves());
