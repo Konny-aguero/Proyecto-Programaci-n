@@ -24,17 +24,17 @@ public class Warrior extends Hero {
                 setRow(newRow);
                 setCol(newCol);
                 addMove();
-                System.out.println("⚔️ Guerrero se movió a (" + newRow + "," + newCol + ")");
+                System.out.println("⚔️ Guerrero se movió a (" + (newRow+1) + "," + (newCol+1) + ")");
                 return true;
             }
         }
 
-        System.out.println("Movimiento inválido para el Guerrero!");
+        System.out.println("Movimiento inválido para el Guerrero!, intente nuevamente...");
         return false;
     }
 
     @Override
-    public void attack(Hero target) {
+    public boolean attack(Hero target) {
         int rowDifference = Math.abs(target.getRow() - getRow());
         int colDifference = Math.abs(target.getCol() - getCol());
 
@@ -48,8 +48,25 @@ public class Warrior extends Hero {
             if (!target.isAlive()) addKill();
 
             System.out.println("⚔️ Guerrero ataca y hace " + damage + " de daño!");
+            return true;
         } else {
             System.out.println("Objetivo fuera de rango para el Guerrero!");
+            return false;
         }
     }
+    @Override
+    public int[][] validMoves(int boardSize) {
+        int[][] moves = new int[4][2];
+        int count = 0;
+        int r = getRow();
+        int c = getCol();
+        if (r > 0) moves[count++] = new int[]{r-1, c};      // arriba
+        if (r < boardSize-1) moves[count++] = new int[]{r+1, c};  // abajo
+        if (c > 0) moves[count++] = new int[]{r, c-1};      // izquierda
+        if (c < boardSize-1) moves[count++] = new int[]{r, c+1};  // derecha
+        int[][] result = new int[count][2];
+        for (int i = 0; i < count; i++) result[i] = moves[i];
+        return result;
+    }
+
 }

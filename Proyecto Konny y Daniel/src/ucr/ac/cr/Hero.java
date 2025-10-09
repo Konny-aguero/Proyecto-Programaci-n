@@ -16,7 +16,12 @@ public abstract class Hero {
     }
 
     public abstract boolean move(int newRow, int newCol, int boardSize);
-    public abstract void attack(Hero target);
+    public abstract boolean attack(Hero target);
+
+    public int[][] validMoves(int boardSize) {
+        return new int[0][0];
+    }
+
 
     public void takeDamage(int dmg) {
         this.hp = hp - dmg;

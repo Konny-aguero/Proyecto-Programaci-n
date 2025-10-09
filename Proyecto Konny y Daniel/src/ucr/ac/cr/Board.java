@@ -45,10 +45,20 @@ public class Board {
     }
 
     static void automaticHeroesInitialization(String[][] board, int size, Hero[] hero1, Hero[] hero2){
-        board[0][0] = "["+hero1[0].getSymbol()+"]"; board[0][1] = "["+hero1[1].getSymbol()+"]"; board[0][2] = "["+hero1[2].getSymbol()+"]"; board[0][3] = "["+hero1[3].getSymbol()+"]"; board[0][4] = "["+hero1[4].getSymbol()+"]";
-
-        board[size-1][0] = "["+hero2[0].getSymbol()+"]"; board[size-1][1] = "["+hero2[1].getSymbol()+"]"; board[size-1][2] = "["+hero2[2].getSymbol()+"]"; board[size-1][3] = "["+hero2[3].getSymbol()+"]"; board[size-1][4] = "["+hero2[4].getSymbol()+"]";
+        // Jugador 1 (fila 0)
+        for (int i = 0; i < hero1.length; i++) {
+            board[0][i] = "[" + hero1[i].getSymbol() + "]";
+            hero1[i].setRow(0);
+            hero1[i].setCol(i);
+        }
+        // Jugador 2 (última fila)
+        for (int i = 0; i < hero2.length; i++) {
+            board[size-1][i] = "[" + hero2[i].getSymbol() + "]";
+            hero2[i].setRow(size-1);
+            hero2[i].setCol(i);
+        }
     }
+
 
     static void colocationHeroes(Hero[] hero1, Hero[] hero2, String[][] board, Scanner sc) {
         for (int h = 0; h < hero1.length; h++) {

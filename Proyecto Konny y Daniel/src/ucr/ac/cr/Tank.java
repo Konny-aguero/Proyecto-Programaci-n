@@ -29,12 +29,12 @@ public class Tank extends Hero {
             }
         }
 
-        System.out.println("Movimiento inválido para el Tanque!");
+        System.out.println("Movimiento inválido para el Tanque!, intente nuevamente...");
         return false;
     }
 
     @Override
-    public void attack(Hero target) {
+    public boolean attack(Hero target) {
         int rowDifference = Math.abs(target.getRow() - getRow());
         int colDifference = Math.abs(target.getCol() - getCol());
 
@@ -48,8 +48,10 @@ public class Tank extends Hero {
             if (!target.isAlive()) addKill();
 
             System.out.println("🛡️ Tanque ataca y hace " + damage + " de daño!");
+            return true;
         } else {
             System.out.println("Objetivo fuera de rango para el Tanque!");
+            return false;
         }
     }
 
@@ -59,4 +61,19 @@ public class Tank extends Hero {
         if (reduced < 0) reduced = 0;
         super.takeDamage(reduced);
     }
+    @Override
+    public int[][] validMoves(int boardSize) {
+        int[][] moves = new int[4][2];
+        int count = 0;
+        int r = getRow();
+        int c = getCol();
+        if (r > 0) moves[count++] = new int[]{r-1, c};
+        if (r < boardSize-1) moves[count++] = new int[]{r+1, c};
+        if (c > 0) moves[count++] = new int[]{r, c-1};
+        if (c < boardSize-1) moves[count++] = new int[]{r, c+1};
+        int[][] result = new int[count][2];
+        for (int i = 0; i < count; i++) result[i] = moves[i];
+        return result;
+    }
+
 }

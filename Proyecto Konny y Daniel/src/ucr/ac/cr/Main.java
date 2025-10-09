@@ -87,9 +87,160 @@ public class Main extends Board {
 
                 System.out.println();
 
-                //aqui empieza la batalla ----------------- TODO PENDIENTE -----------------
-                System.out.println("Turno del jugador: " + activePlayer + "(" + (activePlayer.equals(player1.getPlayerName()) ? player1.getNameArmy() : player2.getNameArmy()) + ")");
-                System.out.println("Seleccione una opción:");
+
+                boolean gameOn = true;
+                Hero[] activeHeroes;
+                Hero[] enemyHeroes;
+
+                if (activePlayer.equals(player1.getPlayerName())) {
+                    activeHeroes = hero1;
+                    enemyHeroes = hero2;
+                } else {
+                    activeHeroes = hero2;
+                    enemyHeroes = hero1;
+                }
+                while (gameOn) {
+                    System.out.println("Turno del jugador: " + activePlayer + "(" + (activePlayer.equals(player1.getPlayerName()) ? player1.getNameArmy() : player2.getNameArmy()) + ")");
+                    System.out.println("Seleccione una opción:");
+                    System.out.println("1. Mover héroe");
+                    System.out.println("2. Atacar con héroe");
+                    System.out.println("3. Ver estadísticas");
+                    System.out.println("4. Pasar turno");
+                    System.out.println("5. Retirada");
+                    int action = sc.nextInt();
+
+                    switch (action) {
+                        case 1: // Mover héroe
+                            boolean moved = false;
+                            while (!moved) {
+                                System.out.println("Seleccione el héroe a mover: ");
+                                Board.showAvailableHeroes(activeHeroes);
+                                int heroe = sc.nextInt() - 1;
+
+                                System.out.println("Casillas válidas para mover:");
+                                int[][] moves = activeHeroes[heroe].validMoves(size);
+                                for (int[] m : moves) {
+                                    System.out.print("(" + (m[0]+1) + "," + (m[1]+1) + ") ");
+                                }
+                                System.out.println();
+
+                                System.out.println("Ingrese la fila: ");
+                                int fila = sc.nextInt() - 1;
+
+                                System.out.println("Ingrese la columna: ");
+                                int columna = sc.nextInt() - 1;
+
+                                int oldRow = activeHeroes[heroe].getRow();
+                                int oldCol = activeHeroes[heroe].getCol();
+
+                                if (activeHeroes[heroe].move(fila, columna, size)) {
+
+                                    board[oldRow][oldCol] = "[ ]";
+                                    int newrow = activeHeroes[heroe].getRow();
+                                    int newcol = activeHeroes[heroe].getCol();
+                                    board[newrow][newcol] = "[" + activeHeroes[heroe].getSymbol() + "]";
+
+                                    showBoard(size);
+
+                                    if (activePlayer.equals(player1.getPlayerName())) {
+                                        activePlayer = player2.getPlayerName();
+                                        activeHeroes = hero2;
+                                        enemyHeroes = hero1;
+                                    } else {
+                                        activePlayer = player1.getPlayerName();
+                                        activeHeroes = hero1;
+                                        enemyHeroes = hero2;
+                                    }
+
+                                    System.out.println("Paso de turno");
+                                    moved = true;
+                                } else {
+                                    showBoard(size);
+
+                                }
+                            }
+                            break;
+
+                        case 2: // Atacar con héroe
+                            boolean attacked = false;
+                            while (!attacked) {
+                                System.out.println("Seleccione el héroe con el que deseas atacar: ");
+                                Board.showAvailableHeroes(activeHeroes);
+                                int heroe1 = sc.nextInt() - 1;
+
+                                System.out.println("Elige el héroe a atacar: ");
+                                Board.showAvailableHeroes(enemyHeroes);
+                                int enemy = sc.nextInt() - 1;
+
+                                int oldRow1 = activeHeroes[heroe1].getRow();
+                                int oldCol1 = activeHeroes[heroe1].getCol();
+
+                                if (activeHeroes[heroe1].attack(enemyHeroes[enemy])) {
+                                    board[oldRow1][oldCol1] = "[ ]";
+                                    int newrow = activeHeroes[heroe1].getRow();
+                                    int newcol = activeHeroes[heroe1].getCol();
+                                    board[newrow][newcol] = "[" + activeHeroes[heroe1].getSymbol() + "]";
+                                    if (!enemyHeroes[enemy].isAlive()) {
+                                        System.out.println(enemyHeroes[enemy].getSymbol() + " ha sido eliminado!");
+                                        board[enemyHeroes[enemy].getRow()][enemyHeroes[enemy].getCol()] = "[ ]";
+                                    }
+
+                                    showBoard(size);
+                                    if (activePlayer.equals(player1.getPlayerName())) {
+                                        activePlayer = player2.getPlayerName();
+                                        activeHeroes = hero2;
+                                        enemyHeroes = hero1;
+                                    } else {
+                                        activePlayer = player1.getPlayerName();
+                                        activeHeroes = hero1;
+                                        enemyHeroes = hero2;
+                                    }
+
+                                    System.out.println("Paso de turno");
+                                    attacked = true;
+                                } else {
+                                    showBoard(size);
+
+                                }
+                            }
+                            break;
+
+
+                        case 3: // Ver estadísticas
+                            Board.showAvailableHeroes(activeHeroes);
+                            int heroe2 = sc.nextInt()-1;
+                            Stats.showStats(activeHeroes[heroe2]);
+                            break;
+
+                        case 4:// Pasar turno al otro jugador
+                            if (activePlayer.equals(player1.getPlayerName())){
+                                activePlayer = player2.getPlayerName();
+                                activeHeroes = hero2;
+                                enemyHeroes = hero1;
+                            }else{
+                                activePlayer = player1.getPlayerName();
+                                activeHeroes = hero1;
+                                enemyHeroes = hero2;
+                            }
+                            System.out.println("Paso de turno");
+                            break;
+
+                        case 5: //Retirada
+                            System.out.print(activePlayer +" se ha retirado, gana: ");
+                            if (activePlayer.equals(player1.getPlayerName())){
+                                activePlayer = player2.getPlayerName();
+                            }else{
+                                activePlayer = player1.getPlayerName();
+                            }
+                            System.out.print(activePlayer);
+                            gameOn = false;
+                            break;
+
+                        default:
+                            System.out.println("Opción inválida.");
+                    }
+                }
+
                 //1. Mover héroe
                 //2. Atacar con héroe
                 //3. Ver estadisticas

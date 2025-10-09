@@ -1,5 +1,4 @@
 package ucr.ac.cr;
-
 import java.util.Random;
 
 public class Wizard extends Hero {
@@ -15,36 +14,51 @@ public class Wizard extends Hero {
                 setRow(newRow);
                 setCol(newCol);
                 addMove();
-                System.out.println("✨ Mago se teletransportó a (" + newRow + "," + newCol + ")");
+                System.out.println("🪄 Mago se movió a (" + (newRow + 1) + "," + (newCol + 1) + ")");
                 return true;
             }
         }
-        System.out.println("Movimiento inválido para el Mago!");
+        System.out.println("Movimiento inválido para el Mago!, intente nuevamente...");
         return false;
     }
 
-    // Ataque en área: casilla objetivo y adyacentes
-    public void attackArea(Hero[] heroes, int targetRow, int targetCol, int boardSize) {
-        Random rand = new Random();
-        for (Hero h : heroes) {
-            int r = h.getRow();
-            int c = h.getCol();
-            if (Math.abs(r - targetRow) <= 1 && Math.abs(c - targetCol) <= 1) {
-                int damage = 4 + rand.nextInt(4);
-                if (h instanceof Warrior) damage += 2;
-                h.takeDamage(damage);
-                addDamageDealt(damage);
-                if (!h.isAlive()) addKill();
-                System.out.println("✨ Mago ataca y hace " + damage + " de daño a " + h.getSymbol() + "!");
-            }
+    @Override
+    public boolean attack(Hero target) {
+        int rowDiff = target.getRow() - getRow();
+        int colDiff = target.getCol() - getCol();
+        if (Math.abs(rowDiff) <= 1 && Math.abs(colDiff) <= 1) {
+            Random rand = new Random();
+            int damage = 4 + rand.nextInt(4);
+
+            if (target instanceof Warrior) damage += 2;
+
+            target.takeDamage(damage);
+            addDamageDealt(damage);
+            if (!target.isAlive()) addKill();
+            System.out.println("🪄 Mago lanza hechizo e inflige " + damage + " de daño a " + target.getSymbol() + "!");
+            return true;
+        } else {
+            System.out.println("❌ Objetivo fuera de alcance del Mago.");
+            return false;
         }
     }
-
     @Override
-    public void attack(Hero target) {
-
-        System.out.println("Usa attackArea para el ataque en área del mago.");
+    public int[][] validMoves(int boardSize) {
+        int[][] moves = new int[24][2]; // máximo 24 posiciones
+        int count = 0;
+        for (int r = getRow() - 2; r <= getRow() + 2; r++) {
+            for (int c = getCol() - 2; c <= getCol() + 2; c++) {
+                if (r == getRow() && c == getCol()) continue;
+                if (r >= 0 && r < boardSize && c >= 0 && c < boardSize) {
+                    moves[count][0] = r;
+                    moves[count][1] = c;
+                    count++;
+                }
+            }
+        }
+        int[][] result = new int[count][2];
+        for (int i = 0; i < count; i++) result[i] = moves[i];
+        return result;
     }
+
 }
-//no entiendo lo de attackArea
-//falta penalizacion por ser debil

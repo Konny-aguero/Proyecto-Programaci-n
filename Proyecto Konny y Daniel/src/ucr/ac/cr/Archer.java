@@ -15,16 +15,16 @@ public class Archer extends Hero {
                 setRow(newRow);
                 setCol(newCol);
                 addMove();
-                System.out.println("🏹 Arquero se movió a (" + newRow + "," + newCol + ")");
+                System.out.println("🏹 Arquero se movió a (" + (newRow + 1)+ "," + (newCol + 1)+")");
                 return true;
             }
         }
-        System.out.println("Movimiento inválido para el Arquero!");
+        System.out.println("Movimiento inválido para el Arquero!, intente nuevamente...");
         return false;
     }
 
     @Override
-    public void attack(Hero target) {
+    public boolean attack(Hero target) {
         int rowDiff = target.getRow() - getRow();
         int colDiff = target.getCol() - getCol();
 
@@ -34,14 +34,41 @@ public class Archer extends Hero {
         if (enLinea && distancia >= 1 && distancia <= 3) {
             Random rand = new Random();
             int damage = 5 + rand.nextInt(3);
+
             if (target instanceof Tank) damage += 2;
+            if (target instanceof Warrior) damage -= 1;
+            if (target instanceof Wizard) damage -= 1;
+
+            if (damage < 0) damage = 0;
             target.takeDamage(damage);
             addDamageDealt(damage);
             if (!target.isAlive()) addKill();
             System.out.println("🏹 Arquero dispara y hace " + damage + " de daño a " + target.getSymbol() + "!");
+            return true;
         } else {
             System.out.println("❌ Objetivo fuera de alcance del arquero.");
+            return false;
         }
     }
+
+    @Override
+    public int[][] validMoves(int boardSize) {
+        int[][] moves = new int[8][2];
+        int count = 0;
+        for (int r = getRow() - 1; r <= getRow() + 1; r++) {
+            for (int c = getCol() - 1; c <= getCol() + 1; c++) {
+                if (r == getRow() && c == getCol()) continue;
+                if (r >= 0 && r < boardSize && c >= 0 && c < boardSize) {
+                    moves[count][0] = r;
+                    moves[count][1] = c;
+                    count++;
+                }
+            }
+        }
+        int[][] result = new int[count][2];
+        for (int i = 0; i < count; i++) result[i] = moves[i];
+        return result;
+    }
+
 }
 //falta penalizacion por ser debil

@@ -1,7 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
 
 package ucr.ac.cr;
 
@@ -26,37 +22,49 @@ public class Killer extends Hero {
             }
         }
 
-        System.out.println("Movimiento inválido para el Asesino!");
+        System.out.println("Movimiento inválido para el Asesino!, intente nuevamente...");
         return false;
     }
 
     @Override
-    public void attack(Hero target) {
+    public boolean attack(Hero target) {
         Random rand = new Random();
-        int totaldamage = 0;
+        int totalDamage = 0;
 
-        for (int i = 0; i<2; i++){
+        for (int i = 0; i < 2; i++) {
             int damage = 7 + rand.nextInt(3);
 
-            if (target instanceof Archer || target instanceof Wizard){
-                damage = damage +3;
-
+            if (target instanceof Archer || target instanceof Wizard) {
+                damage += 3;
             }
 
             target.takeDamage(damage);
             addDamageDealt(damage);
-            totaldamage = totaldamage + damage;
+            totalDamage += damage;
 
             if (!target.isAlive()) {
                 addKill();
-                System.out.println("🗡️ Asesino ataca" + totaldamage + " de daño a " + target.getSymbol() + "!");
-                break;
-
-            } else {
-                System.out.println("❌ Objetivo fuera de alcance del asesino.");
+                System.out.println("🗡️ Asesino atacó a " + target.getSymbol() + " y lo derrotó con " + totalDamage + " de daño!");
+                return true;
             }
         }
 
+        System.out.println("🗡️ Asesino atacó a " + target.getSymbol() + " y le hizo " + totalDamage + " de daño. Sigue vivo.");
+        return false;
     }
+    @Override
+    public int[][] validMoves(int boardSize) {
+        int[][] moves = new int[4][2];
+        int count = 0;
+        int r = getRow();
+        int c = getCol();
+        if (r - 2 >= 0 && c - 2 >= 0) moves[count++] = new int[]{r-2, c-2}; // arriba-izquierda
+        if (r - 2 >= 0 && c + 2 < boardSize) moves[count++] = new int[]{r-2, c+2}; // arriba-derecha
+        if (r + 2 < boardSize && c - 2 >= 0) moves[count++] = new int[]{r+2, c-2}; // abajo-izquierda
+        if (r + 2 < boardSize && c + 2 < boardSize) moves[count++] = new int[]{r+2, c+2}; // abajo-derecha
+        int[][] result = new int[count][2];
+        for (int i = 0; i < count; i++) result[i] = moves[i];
+        return result;
+    }
+
 }
-//falta penalizacion por ser debil
