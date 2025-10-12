@@ -42,6 +42,11 @@ public class Warrior extends Hero {
             Random rand = new Random();
             int damage = 6 + rand.nextInt(3);
 
+            // Si el enemigo es Mago, recibir más daño
+            if (target instanceof Wizard) {
+                damage += 2;  // bonificación por debilidad
+            }
+
             target.takeDamage(damage);
             addDamageDealt(damage);
 

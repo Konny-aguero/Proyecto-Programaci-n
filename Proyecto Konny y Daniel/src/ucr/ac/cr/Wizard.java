@@ -42,6 +42,31 @@ public class Wizard extends Hero {
             return false;
         }
     }
+    public boolean attackArea(Hero[] enemies) {
+        boolean atacado = false;
+
+        for (Hero enemy : enemies) {
+            if (enemy == null || !enemy.isAlive()) continue;
+
+            int rowDiff = Math.abs(enemy.getRow() - getRow());
+            int colDiff = Math.abs(enemy.getCol() - getCol());
+            if (rowDiff <= 1 && colDiff <= 1) {
+                int damage = 4 + (int)(Math.random() * 4); // 4-7
+                if (enemy instanceof Warrior) damage += 2;
+                enemy.takeDamage(damage);
+                addDamageDealt(damage);
+                if (!enemy.isAlive()) addKill();
+                System.out.println("🪄 Mago lanza hechizo e inflige " + damage + " de daño a " + enemy.getSymbol() + "!");
+                atacado = true;
+            }
+        }
+
+        if (!atacado) {
+            System.out.println("❌ No hay enemigos adyacentes para atacar.");
+        }
+        return atacado;
+    }
+
     @Override
     public int[][] validMoves(int boardSize) {
         int[][] moves = new int[24][2]; // máximo 24 posiciones

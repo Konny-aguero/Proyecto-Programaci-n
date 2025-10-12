@@ -81,6 +81,7 @@ public class Board {
         }
     }
 
+
     static void placeHero(Hero[] heroes, String[][] board, Scanner sc, int player) {
         int option = 1;
         boolean validOption = false;

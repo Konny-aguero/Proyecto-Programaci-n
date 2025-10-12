@@ -28,6 +28,15 @@ public class Killer extends Hero {
 
     @Override
     public boolean attack(Hero target) {
+        // Solo atacar si está adyacente
+        int dr = Math.abs(getRow() - target.getRow());
+        int dc = Math.abs(getCol() - target.getCol());
+
+        if (dr > 1 || dc > 1) { // adyacente = distancia máxima 1
+            System.out.println("🗡️ Asesino: objetivo no adyacente, ataque inválido!");
+            return false;
+        }
+
         Random rand = new Random();
         int totalDamage = 0;
 

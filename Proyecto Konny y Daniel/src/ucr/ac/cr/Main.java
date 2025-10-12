@@ -139,14 +139,21 @@ public class Main extends Board {
                             Board.showAvailableHeroes(enemyHeroes);
                             int enemy = sc.nextInt() - 1;
                             if (enemyHeroes[enemy] == null) {
-                                System.out.println(" no disponible, elige otro.");
+                                System.out.println("Enemigo no disponible.");
                                 continue;
                             }
 
                             int oldRow1 = activeHeroes[heroe1].getRow();
                             int oldCol1 = activeHeroes[heroe1].getCol();
 
-                            boolean ataqueExitoso = activeHeroes[heroe1].attack(enemyHeroes[enemy]);
+
+                            Hero heroe = activeHeroes[heroe1];
+                            boolean ataqueExitoso;
+                            if (heroe instanceof Wizard) {
+                                ataqueExitoso = ((Wizard) heroe).attackArea(enemyHeroes); // ataque en área
+                            } else {
+                                ataqueExitoso = heroe.attack(enemyHeroes[enemy]); // ataque normal
+                            }
 
                             if (ataqueExitoso) {
                                 board[oldRow1][oldCol1] = "[ ]";
@@ -158,6 +165,21 @@ public class Main extends Board {
                                     board[enemyHeroes[enemy].getRow()][enemyHeroes[enemy].getCol()] = "[ ]";
                                     enemyHeroes[enemy] = null;
                                 }
+                                // Verificar si el ejército enemigo ha sido eliminado
+                                boolean enemyAlive = false;
+                                for (Hero hero : enemyHeroes) {
+                                    if (hero != null && hero.isAlive()) {
+                                        enemyAlive = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!enemyAlive) {
+                                    System.out.println("¡" + activePlayer + " ha ganado la partida!");
+                                    gameOn = false; // termina el bucle principal
+                                    break; // sale del switch
+                                }
+
                             }
 
                             showBoard(size);
@@ -180,6 +202,9 @@ public class Main extends Board {
                         case 3: // Ver estadísticas
                             Board.showAvailableHeroes(activeHeroes);
                             int heroe2 = sc.nextInt()-1;
+                            if (activeHeroes[heroe2] == null) {
+                                System.out.println("Héroe no disponible.");
+                                continue;}
                             Stats.showStats(activeHeroes[heroe2]);
                             break;
 

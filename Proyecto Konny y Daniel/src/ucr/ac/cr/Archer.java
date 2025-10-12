@@ -73,4 +73,3 @@ public class Archer extends Hero {
     }
 
 }
-//falta penalizacion por ser debil
