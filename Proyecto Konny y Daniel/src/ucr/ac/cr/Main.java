@@ -28,26 +28,17 @@ public class Main extends Board {
                         System.out.println("tamaño no valido");
                     }
                 }
+                //TODO: crear metodo para inicializar jugadores: initializeHeroes()
 
                 Players player1 = new Players("Player 1");
                 System.out.println("Digite el nombre del ejercito del jugador 1 (no se permiten espacios)");
                 player1.setNameArmy(sc.next()); //asigna el nombre del ejercito
-                Hero[] hero1 = new Hero[5]; //5 heroes por persona
-                hero1[0] = new Archer(10, 'A');
-                hero1[1] = new Warrior(15, 'G');
-                hero1[2] = new Wizard(8, 'M');
-                hero1[3] = new Tank(20, 'T');
-                hero1[4] = new Killer(9, 'S');
+                Hero[] hero1 = getHeroes();
 
                 Players player2 = new Players("Player 2");
                 System.out.println("Digite el nombre del ejercito del jugador 2 (no se permiten espacios)");
                 player2.setNameArmy(sc.next()); //asigna el nombre del ejercito
-                Hero[] hero2 = new Hero[5]; //5 heroes por persona
-                hero2[0] = new Archer(10, 'A');
-                hero2[1] = new Warrior(15, 'G');
-                hero2[2] = new Wizard(8, 'M');
-                hero2[3] = new Tank(20, 'T');
-                hero2[4] = new Killer(9, 'S');
+                Hero[] hero2 = getHeroes();
 
                 System.out.println();
                 System.out.println("COLOCACION DE HEROES EN EL TABLERO");
@@ -241,13 +232,6 @@ public class Main extends Board {
                     }
                 }
 
-                //1. Mover héroe
-                //2. Atacar con héroe
-                //3. Ver estadisticas
-                //4. Pasar turno al otro jugador
-                //5. Retirada
-
-
                 break;
             case (2):
                 showInstructions(); //muestra las intrucciones del juego
@@ -261,6 +245,17 @@ public class Main extends Board {
                 System.out.println("opcion no valida");
         }
     }
+
+    private static Hero[] getHeroes() {
+        Hero[] hero = new Hero[5]; //5 heroes por persona
+        hero[0] = new Archer(10, 'A');
+        hero[1] = new Warrior(15, 'G');
+        hero[2] = new Wizard(8, 'M');
+        hero[3] = new Tank(20, 'T');
+        hero[4] = new Killer(9, 'S');
+        return hero;
+    }
+
     public static void showMainMenu(){
         System.out.println("              ▛▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝ ▜");
         System.out.println("                  ⚔  ARENA DE HÉROES  ⚔");
