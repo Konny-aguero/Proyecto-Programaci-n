@@ -51,7 +51,7 @@ public class Board {
     }
 
 
-    static void colocationHeroes(Hero[] hero1, Hero[] hero2, String[][] board, Scanner sc) {
+    static void PlaceHeroesManually(Hero[] hero1, Hero[] hero2, String[][] board, Scanner sc) {
         for (int h = 0; h < hero1.length; h++) {
             System.out.println("Turno del Jugador 1");
             showAvailableHeroes(hero1);
