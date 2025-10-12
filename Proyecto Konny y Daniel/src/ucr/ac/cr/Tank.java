@@ -67,13 +67,27 @@ public class Tank extends Hero {
         int count = 0;
         int r = getRow();
         int c = getCol();
-        if (r > 0) moves[count++] = new int[]{r-1, c};
-        if (r < boardSize-1) moves[count++] = new int[]{r+1, c};
-        if (c > 0) moves[count++] = new int[]{r, c-1};
-        if (c < boardSize-1) moves[count++] = new int[]{r, c+1};
+
+        // arriba
+        if (r > 0 && Board.isEmpty(r - 1, c))
+            moves[count++] = new int[]{r - 1, c};
+
+        // abajo
+        if (r < boardSize - 1 && Board.isEmpty(r + 1, c))
+            moves[count++] = new int[]{r + 1, c};
+
+        // izquierda
+        if (c > 0 && Board.isEmpty(r, c - 1))
+            moves[count++] = new int[]{r, c - 1};
+
+        // derecha
+        if (c < boardSize - 1 && Board.isEmpty(r, c + 1))
+            moves[count++] = new int[]{r, c + 1};
+
         int[][] result = new int[count][2];
         for (int i = 0; i < count; i++) result[i] = moves[i];
         return result;
     }
+
 
 }

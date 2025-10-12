@@ -58,13 +58,25 @@ public class Killer extends Hero {
         int count = 0;
         int r = getRow();
         int c = getCol();
-        if (r - 2 >= 0 && c - 2 >= 0) moves[count++] = new int[]{r-2, c-2}; // arriba-izquierda
-        if (r - 2 >= 0 && c + 2 < boardSize) moves[count++] = new int[]{r-2, c+2}; // arriba-derecha
-        if (r + 2 < boardSize && c - 2 >= 0) moves[count++] = new int[]{r+2, c-2}; // abajo-izquierda
-        if (r + 2 < boardSize && c + 2 < boardSize) moves[count++] = new int[]{r+2, c+2}; // abajo-derecha
+
+        if (r - 2 >= 0 && c - 2 >= 0 && Board.isEmpty(r - 2, c - 2)) // arriba-izquierda
+            moves[count++] = new int[]{r - 2, c - 2};
+
+        if (r - 2 >= 0 && c + 2 < boardSize && Board.isEmpty(r - 2, c + 2)) // arriba-derecha
+            moves[count++] = new int[]{r - 2, c + 2};
+
+        if (r + 2 < boardSize && c - 2 >= 0 && Board.isEmpty(r + 2, c - 2)) // abajo-izquierda
+            moves[count++] = new int[]{r + 2, c - 2};
+
+        if (r + 2 < boardSize && c + 2 < boardSize && Board.isEmpty(r + 2, c + 2)) // abajo-derecha
+            moves[count++] = new int[]{r + 2, c + 2};
+
         int[][] result = new int[count][2];
-        for (int i = 0; i < count; i++) result[i] = moves[i];
+        for (int i = 0; i < count; i++)
+            result[i] = moves[i];
+
         return result;
     }
+
 
 }

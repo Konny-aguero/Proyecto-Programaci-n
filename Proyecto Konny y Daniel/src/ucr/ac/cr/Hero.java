@@ -9,6 +9,15 @@ public abstract class Hero {
     private int damageTaken;
     private int kills;
     private int moves;
+    private boolean placed = false;
+
+    public boolean isPlaced() {
+        return placed;
+    }
+
+    public void setPlaced(boolean placed) {
+        this.placed = placed;
+    }
 
     public Hero(int hp, char symbol) {
         this.hp = hp;

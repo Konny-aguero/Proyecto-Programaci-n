@@ -57,6 +57,7 @@ public class Board {
             showAvailableHeroes(hero1);
             placeHero(hero1, board, sc, 1);
             showBoard(board.length);
+
         }
 
         for (int h = 0; h < hero2.length; h++) {
@@ -87,8 +88,8 @@ public class Board {
         while (!validOption) {
             System.out.print("Héroe: ");
             option = sc.nextInt() - 1; // -1 para ajustar al índice del array
-            if (option < 0 || option >= heroes.length || heroes[option] == null) {
-                System.out.println("Opción inválida.");
+            if (option < 0 || option >= heroes.length || heroes[option].isPlaced()) {
+                System.out.println("Opción inválida, el héroe ya fue colocado o no existe. Intenta de nuevo.");
             } else {
                 validOption = true;
             }
@@ -117,7 +118,15 @@ public class Board {
         }
 
         board[row][col] = "[" + heroes[option].getSymbol() + "]";
-        heroes[option] = null;
+        // Actualiza la posición del héroe
+        heroes[option].setRow(row);
+        heroes[option].setCol(col);
+        heroes[option].setPlaced(true);
+
+
     }
 
+    public static boolean isEmpty(int r, int c) {
+        return board[r][c].equals(EMPTY);
+    }
 }

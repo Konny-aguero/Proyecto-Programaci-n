@@ -59,9 +59,11 @@ public class Archer extends Hero {
             for (int c = getCol() - 1; c <= getCol() + 1; c++) {
                 if (r == getRow() && c == getCol()) continue;
                 if (r >= 0 && r < boardSize && c >= 0 && c < boardSize) {
-                    moves[count][0] = r;
-                    moves[count][1] = c;
-                    count++;
+                    if (Board.isEmpty(r, c)) {
+                        moves[count][0] = r;
+                        moves[count][1] = c;
+                        count++;
+                    }
                 }
             }
         }
