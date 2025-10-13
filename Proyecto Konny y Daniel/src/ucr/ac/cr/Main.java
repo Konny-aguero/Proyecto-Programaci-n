@@ -1,6 +1,5 @@
 package ucr.ac.cr;
 import java.util.Scanner;
-
 public class Main extends Board {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -8,55 +7,22 @@ public class Main extends Board {
         boolean flag = true;
         showMainMenu();
         int option = sc.nextInt();
-
         switch (option) {
             case (1):
-                while (flag){
-                    System.out.print("digite el tamaño del tablero (5-20): ");
-                    size = sc.nextInt();
-                    if (size >= 5 && size <= 20) {
-                        InitializerBoard(size);
-                        flag = false;
-                    } else {
-                        System.out.println("tamaño no valido");
-                    }
-                }
-
+                size = GetBoardSize(size, flag, sc);
                 Players player1 = new Players("Player 1");
                 System.out.println("Digite el nombre del ejercito del jugador 1 (no se permiten espacios)");
-                player1.setNameArmy(sc.next()); //asigna el nombre del ejercito
+                player1.setNameArmy(sc.next());
                 Hero[] hero1 = getHeroes();
-
                 Players player2 = new Players("Player 2");
                 System.out.println("Digite el nombre del ejercito del jugador 2 (no se permiten espacios)");
-                player2.setNameArmy(sc.next()); //asigna el nombre del ejercito
-                Hero[] hero2 = getHeroes();
-
-                System.out.println();
+                player2.setNameArmy(sc.next());
+                Hero[] hero2 = getHeroes(); System.out.println();
                 System.out.println("COLOCACION DE HEROES EN EL TABLERO");
-
-                while (!flag){
-                    int option1 = getOption1(sc);
-                    if(option1 == 1){
-                        PlaceHeroesManually(hero1, hero2, Board.board, sc);
-                        flag = true;
-                    } else if (option1 == 2) {
-                        automaticHeroesInitialization(Board.board ,size ,hero1, hero2);
-                        System.out.println("Los heroes entraron a la arena de juego");
-                        showBoard(size);
-                        flag = true;
-                    } else {
-                        System.out.println("Opcion invalida");
-                    }
-                }
-
-                System.out.println();
+                HeroesInitialization(flag, sc, hero1, hero2, size); System.out.println();
                 System.out.println("COMIENZA LA BATALLA");
                 System.out.println("Comienza el jugador: ");
-                String activePlayer;
-                activePlayer = RandomPlayer(player1, player2);
-                System.out.println();
-
+                String activePlayer; activePlayer = RandomPlayer(player1, player2); System.out.println();
                 boolean gameOn = true;
                 Hero[] activeHeroes;
                 Hero[] enemyHeroes;
@@ -67,47 +33,23 @@ public class Main extends Board {
                     activeHeroes = hero2;
                     enemyHeroes = hero1;
                 }
-
                 while (gameOn) {
                     int action = getActionOfGame(activePlayer, player1, player2, sc);
-
                     switch (action) {
-                        case 1: // Mover héroe
+                        case 1: // Move hero
                             boolean moved = false;
                             while (!moved) {
-                                System.out.println("Seleccione el héroe a mover: ");
-                                Board.showAvailableHeroes(activeHeroes);
-                                int heroe = sc.nextInt() - 1;
-
-                                if (activeHeroes[heroe] == null) {
-                                    System.out.println("Héroe no disponible, elige otro.");
-                                    continue;
-                                }
+                                int heroe = ChooseTheHeroToMove(activeHeroes, sc);
                                 System.out.println("Casillas válidas para mover:");
-                                int[][] moves = activeHeroes[heroe].validMoves(size);
-                                for (int[] m : moves) {
-                                    System.out.print("(" + (m[0]+1) + "," + (m[1]+1) + ") ");
-                                }
-                                System.out.println();
-
+                                ShowValidMoves(size, activeHeroes[heroe]);
                                 System.out.println("Ingrese la fila: ");
-                                int fila = sc.nextInt() - 1;
-
+                                int row1 = sc.nextInt() - 1;
                                 System.out.println("Ingrese la columna: ");
-                                int columna = sc.nextInt() - 1;
-
+                                int colum1 = sc.nextInt() - 1;
                                 int oldRow = activeHeroes[heroe].getRow();
                                 int oldCol = activeHeroes[heroe].getCol();
-
-                                if (activeHeroes[heroe].move(fila, columna, size)) {
-
-                                    board[oldRow][oldCol] = "[ ]";
-                                    int newrow = activeHeroes[heroe].getRow();
-                                    int newcol = activeHeroes[heroe].getCol();
-                                    board[newrow][newcol] = "[" + activeHeroes[heroe].getSymbol() + "]";
-
-                                    showBoard(size);
-
+                                if (activeHeroes[heroe].move(row1, colum1, size)) {
+                                    ReplaceHeroOnBoard(oldRow, oldCol, size, activeHeroes[heroe]);
                                     if (activePlayer.equals(player1.getPlayerName())) {
                                         activePlayer = player2.getPlayerName();
                                         activeHeroes = hero2;
@@ -117,7 +59,6 @@ public class Main extends Board {
                                         activeHeroes = hero1;
                                         enemyHeroes = hero2;
                                     }
-
                                     System.out.println("Paso de turno");
                                     moved = true;
                                 } else {
@@ -125,36 +66,13 @@ public class Main extends Board {
                                 }
                             }
                             break;
-                        case 2: // Atacar con héroe
-
-                            System.out.println("Seleccione el héroe con el que deseas atacar: ");
-                            Board.showAvailableHeroes(activeHeroes);
-                            int heroe1 = sc.nextInt() - 1;
-                            if (activeHeroes[heroe1] == null) {
-                                System.out.println("Héroe no disponible, elige otro.");
-                                continue;
-                            }
-
-                            System.out.println("Elige el héroe a atacar: ");
-                            Board.showAvailableHeroes(enemyHeroes);
-                            int enemy = sc.nextInt() - 1;
-                            if (enemyHeroes[enemy] == null) {
-                                System.out.println("Enemigo no disponible.");
-                                continue;
-                            }
-
+                        case 2: // Attack with hero
+                            Integer heroe1 = ChooseHeroToAttack(activeHeroes, sc);
+                            Integer enemy = ChooseHeroToHit(enemyHeroes, sc);
                             int oldRow1 = activeHeroes[heroe1].getRow();
                             int oldCol1 = activeHeroes[heroe1].getCol();
-
-
                             Hero heroe = activeHeroes[heroe1];
-                            boolean ataqueExitoso;
-                            if (heroe instanceof Wizard) {
-                                ataqueExitoso = ((Wizard) heroe).attackArea(enemyHeroes); // ataque en área
-                            } else {
-                                ataqueExitoso = heroe.attack(enemyHeroes[enemy]); // ataque normal
-                            }
-
+                            boolean ataqueExitoso = IfTheHeroIsAWizard(heroe, enemyHeroes, enemy);
                             if (ataqueExitoso) {
                                 board[oldRow1][oldCol1] = "[ ]";
                                 int newrow = activeHeroes[heroe1].getRow();
@@ -251,6 +169,97 @@ public class Main extends Board {
         }
     }
 
+    private static boolean IfTheHeroIsAWizard(Hero heroe, Hero[] enemyHeroes, Integer enemy) {
+        boolean ataqueExitoso;
+        if (heroe instanceof Wizard) {
+            ataqueExitoso = ((Wizard) heroe).attackArea(enemyHeroes); // ataque en área
+        } else {
+            ataqueExitoso = heroe.attack(enemyHeroes[enemy]); // ataque normal
+        }
+        return ataqueExitoso;
+    }
+
+    private static Integer ChooseHeroToHit(Hero[] enemyHeroes, Scanner sc) {
+        boolean valid = false;
+        int enemy = 0;
+        while (!valid) {
+            System.out.println("Elige el héroe a atacar: ");
+            Board.showAvailableHeroes(enemyHeroes);
+            enemy = sc.nextInt() - 1;
+            if (enemyHeroes[enemy] == null) {
+                System.out.println("Enemigo no disponible.");
+            } else {
+                valid = true;
+            }
+        }
+        return enemy;
+    }
+
+    private static Integer ChooseHeroToAttack(Hero[] activeHeroes, Scanner sc) {
+        boolean valid = false;
+        int heroe1 = 0;
+        while (!valid) {
+            System.out.println("Seleccione el héroe con el que deseas atacar: ");
+            Board.showAvailableHeroes(activeHeroes);
+            heroe1 = sc.nextInt() - 1;
+            if (activeHeroes[heroe1] == null) {
+                System.out.println("Héroe no disponible, elige otro.");
+            } else {
+                valid = true;
+            }
+        }
+        return heroe1;
+    }
+
+    private static void ReplaceHeroOnBoard(int oldRow, int oldCol, int size, Hero activeHeroes) {
+        board[oldRow][oldCol] = "[ ]";
+        int newrow = activeHeroes.getRow();
+        int newcol = activeHeroes.getCol();
+        board[newrow][newcol] = "[" + activeHeroes.getSymbol() + "]";
+        showBoard(size);
+    }
+
+    private static void ShowValidMoves(int size, Hero activeHeroes) {
+        int[][] moves = activeHeroes.validMoves(size);
+        for (int[] m : moves) {
+            System.out.print("(" + (m[0]+1) + "," + (m[1]+1) + ") ");
+        }
+        System.out.println();
+    }
+
+    private static int ChooseTheHeroToMove(Hero[] activeHeroes, Scanner sc) {
+        boolean valid = false;
+        int heroe = 1;
+        while (!valid){
+            System.out.println("Seleccione el héroe a mover: ");
+            Board.showAvailableHeroes(activeHeroes);
+            heroe = sc.nextInt() - 1;
+            if (activeHeroes[heroe] == null) {
+                System.out.println("Héroe no disponible, elige otro.");
+            } else {
+                valid = true;
+            }
+        }
+        return heroe;
+    }
+
+    private static void HeroesInitialization(boolean flag, Scanner sc, Hero[] hero1, Hero[] hero2, int size) {
+        while (flag){
+            int option1 = getOption1(sc);
+            if(option1 == 1){
+                PlaceHeroesManually(hero1, hero2, Board.board, sc);
+                flag = false;
+            } else if (option1 == 2) {
+                automaticHeroesInitialization(Board.board , size, hero1, hero2);
+                System.out.println("Los heroes entraron a la arena de juego");
+                showBoard(size);
+                flag = false;
+            } else {
+                System.out.println("Opcion invalida");
+            }
+        }
+    }
+
     private static int getActionOfGame(String activePlayer, Players player1, Players player2, Scanner sc) {
         System.out.println("Turno del jugador: " + activePlayer + "(" + (activePlayer.equals(player1.getPlayerName()) ? player1.getNameArmy() : player2.getNameArmy()) + ")");
         System.out.println("Seleccione una opción:");
@@ -297,6 +306,19 @@ public class Main extends Board {
         hero[3] = new Tank(GameConfig.TANK_HP , GameConfig.TANK_SYMBOL);
         hero[4] = new Killer(GameConfig.KILLER_HP , GameConfig.KILLER_SYMBOL);
         return hero;
+    }
+    private static int GetBoardSize(int size, boolean flag, Scanner sc) {
+        while (flag){
+            System.out.print("digite el tamaño del tablero (5-20): ");
+            size = sc.nextInt();
+            if (size >= 5 && size <= 20) {
+                InitializerBoard(size);
+                flag = false;
+            } else {
+                System.out.println("tamaño no valido");
+            }
+        }
+        return size;
     }
 
     public static void showMainMenu(){
@@ -349,11 +371,12 @@ public class Main extends Board {
         System.out.println("El objetivo es eliminar todas las piezas rivales o lograr su rendición.");
         System.out.println();
         System.out.println("Recordar la sintaxis de los heroes:");
-        System.out.println("G = Guerrero\n" +
-                "A = Arquero\n" +
-                "M = Mago\n" +
-                "T = Tanque\n" +
-                "S = Asesino");
+        System.out.println("""
+                G = Guerrero
+                A = Arquero
+                M = Mago
+                T = Tanque
+                S = Asesino""");
     }
 
 }
