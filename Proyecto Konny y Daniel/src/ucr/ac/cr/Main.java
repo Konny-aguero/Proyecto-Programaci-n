@@ -1,5 +1,6 @@
 package ucr.ac.cr;
 import java.util.Scanner;
+
 public class Main extends Board {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -9,7 +10,7 @@ public class Main extends Board {
         int option = sc.nextInt();
         switch (option) {
             case (1):
-                size = GetBoardSize(size, flag, sc);
+                size = getBoardSize(size, flag, sc);
                 Players player1 = new Players("Player 1");
                 System.out.println("Digite el nombre del ejercito del jugador 1 (no se permiten espacios)");
                 player1.setNameArmy(sc.next());
@@ -19,19 +20,17 @@ public class Main extends Board {
                 player2.setNameArmy(sc.next());
                 Hero[] hero2 = getHeroes(); System.out.println();
                 System.out.println("COLOCACION DE HEROES EN EL TABLERO");
-                HeroesInitialization(flag, sc, hero1, hero2, size); System.out.println();
+                heroesInitialization(flag, sc, hero1, hero2, size); System.out.println();
                 System.out.println("COMIENZA LA BATALLA");
                 System.out.println("Comienza el jugador: ");
-                String activePlayer; activePlayer = RandomPlayer(player1, player2); System.out.println();
+                String activePlayer; activePlayer = randomPlayer(player1, player2); System.out.println();
                 boolean gameOn = true;
                 Hero[] activeHeroes;
                 Hero[] enemyHeroes;
                 if (activePlayer.equals(player1.getPlayerName())) {
-                    activeHeroes = hero1;
-                    enemyHeroes = hero2;
+                    activeHeroes = hero1; enemyHeroes = hero2;
                 } else {
-                    activeHeroes = hero2;
-                    enemyHeroes = hero1;
+                    activeHeroes = hero2; enemyHeroes = hero1;
                 }
                 while (gameOn) {
                     int action = getActionOfGame(activePlayer, player1, player2, sc);
@@ -39,9 +38,9 @@ public class Main extends Board {
                         case 1: // Move hero
                             boolean moved = false;
                             while (!moved) {
-                                int heroe = ChooseTheHeroToMove(activeHeroes, sc);
+                                int heroe = chooseTheHeroToMove(activeHeroes, sc);
                                 System.out.println("Casillas válidas para mover:");
-                                ShowValidMoves(size, activeHeroes[heroe]);
+                                showValidMoves(size, activeHeroes[heroe]);
                                 System.out.println("Ingrese la fila: ");
                                 int row1 = sc.nextInt() - 1;
                                 System.out.println("Ingrese la columna: ");
@@ -49,15 +48,13 @@ public class Main extends Board {
                                 int oldRow = activeHeroes[heroe].getRow();
                                 int oldCol = activeHeroes[heroe].getCol();
                                 if (activeHeroes[heroe].move(row1, colum1, size)) {
-                                    ReplaceHeroOnBoard(oldRow, oldCol, size, activeHeroes[heroe]);
+                                    replaceHeroOnBoard(oldRow, oldCol, size, activeHeroes[heroe]);
                                     if (activePlayer.equals(player1.getPlayerName())) {
                                         activePlayer = player2.getPlayerName();
-                                        activeHeroes = hero2;
-                                        enemyHeroes = hero1;
+                                        activeHeroes = hero2; enemyHeroes = hero1;
                                     } else {
                                         activePlayer = player1.getPlayerName();
-                                        activeHeroes = hero1;
-                                        enemyHeroes = hero2;
+                                        activeHeroes = hero1; enemyHeroes = hero2;
                                     }
                                     System.out.println("Paso de turno");
                                     moved = true;
@@ -67,74 +64,47 @@ public class Main extends Board {
                             }
                             break;
                         case 2: // Attack with hero
-                            Integer heroe1 = ChooseHeroToAttack(activeHeroes, sc);
-                            Integer enemy = ChooseHeroToHit(enemyHeroes, sc);
+                            Integer heroe1 = chooseHeroToAttack(activeHeroes, sc);
+                            Integer enemy = chooseHeroToHit(enemyHeroes, sc);
                             int oldRow1 = activeHeroes[heroe1].getRow();
                             int oldCol1 = activeHeroes[heroe1].getCol();
                             Hero heroe = activeHeroes[heroe1];
-                            boolean ataqueExitoso = IfTheHeroIsAWizard(heroe, enemyHeroes, enemy);
-                            if (ataqueExitoso) {
-                                board[oldRow1][oldCol1] = "[ ]";
+                            boolean SuccefullAttack = ifTheHeroIsAWizard(heroe, enemyHeroes, enemy);
+                            if (SuccefullAttack){
+                                board[oldRow1][oldCol1] = GameConfig.EMPTY;
                                 int newrow = activeHeroes[heroe1].getRow();
                                 int newcol = activeHeroes[heroe1].getCol();
                                 board[newrow][newcol] = "[" + activeHeroes[heroe1].getSymbol() + "]";
-                                if (!enemyHeroes[enemy].isAlive()) {
-                                    System.out.println(enemyHeroes[enemy].getSymbol() + " ha sido eliminado!");
-                                    board[enemyHeroes[enemy].getRow()][enemyHeroes[enemy].getCol()] = "[ ]";
-                                    enemyHeroes[enemy] = null;
-                                }
-                                // Verificar si el ejército enemigo ha sido eliminado
+                                confirmDeath(enemyHeroes, enemy);
                                 boolean enemyAlive = false;
-                                for (Hero hero : enemyHeroes) {
-                                    if (hero != null && hero.isAlive()) {
-                                        enemyAlive = true;
-                                        break;
-                                    }
+                                enemyAlive = isEnemyAlive(enemyHeroes, enemyAlive);
+                                gameOn = ThePlayerWin(enemyAlive, activePlayer);
+                                if (!gameOn) {
+                                    break;
                                 }
-
-                                if (!enemyAlive) {
-                                    System.out.println("¡" + activePlayer + " ha ganado la partida!");
-                                    gameOn = false; // termina el bucle principal
-                                    break; // sale del switch
-                                }
-
                             }
-
                             showBoard(size);
-
-                            // Cambio de turno, siempre se ejecuta
-                            if (activePlayer.equals(player1.getPlayerName())) {
+                            if (activePlayer.equals(player1.getPlayerName())) { //Cambio de turno
                                 activePlayer = player2.getPlayerName();
-                                activeHeroes = hero2;
-                                enemyHeroes = hero1;
+                                activeHeroes = hero2; enemyHeroes = hero1;
                             } else {
                                 activePlayer = player1.getPlayerName();
-                                activeHeroes = hero1;
-                                enemyHeroes = hero2;
+                                activeHeroes = hero1; enemyHeroes = hero2;
                             }
-
                             System.out.println("Paso de turno");
                             break;
-
-
-                        case 3: // Ver estadísticas
+                        case 3: // Show stats
                             Board.showAvailableHeroes(activeHeroes);
-                            int heroe2 = sc.nextInt()-1;
-                            if (activeHeroes[heroe2] == null) {
-                                System.out.println("Héroe no disponible.");
-                                continue;}
+                            Integer heroe2 = getHeroe2(sc, activeHeroes);
                             Stats.showStats(activeHeroes[heroe2]);
                             break;
-
-                        case 4:// Pasar turno al otro jugador
+                        case 4:// skip turn
                             if (activePlayer.equals(player1.getPlayerName())){
                                 activePlayer = player2.getPlayerName();
-                                activeHeroes = hero2;
-                                enemyHeroes = hero1;
+                                activeHeroes = hero2; enemyHeroes = hero1;
                             }else{
                                 activePlayer = player1.getPlayerName();
-                                activeHeroes = hero1;
-                                enemyHeroes = hero2;
+                                activeHeroes = hero1; enemyHeroes = hero2;
                             }
                             System.out.println("Paso de turno");
                             break;
@@ -149,37 +119,78 @@ public class Main extends Board {
                             System.out.print(activePlayer);
                             gameOn = false;
                             break;
-
                         default:
                             System.out.println("Opción inválida.");
                     }
                 }
-
                 break;
             case (2):
-                showInstructions(); //muestra las intrucciones del juego
+                showInstructions(); //show instructions of game
                 break;
             case(3):
-                showHistory(); //muestra la historia del juego
+                showHistory(); //show history of game
                 break;
             case (4):
-                break; //finaliza el codigo
+                break; //finish code
             default:
                 System.out.println("opcion no valida");
         }
     }
 
-    private static boolean IfTheHeroIsAWizard(Hero heroe, Hero[] enemyHeroes, Integer enemy) {
-        boolean ataqueExitoso;
-        if (heroe instanceof Wizard) {
-            ataqueExitoso = ((Wizard) heroe).attackArea(enemyHeroes); // ataque en área
-        } else {
-            ataqueExitoso = heroe.attack(enemyHeroes[enemy]); // ataque normal
+    private static Integer getHeroe2(Scanner sc, Hero[] activeHeroes) {
+        boolean valid = false;
+        int heroe2 = 0;
+        while (!valid) {
+            System.out.print("Escoja un heroe:");
+            heroe2 = sc.nextInt() - 1;
+            System.out.println();
+            if (activeHeroes[heroe2] == null) {
+                System.out.println("Héroe no disponible.");
+            } else {
+                valid = true;
+            }
         }
-        return ataqueExitoso;
+        return heroe2;
     }
 
-    private static Integer ChooseHeroToHit(Hero[] enemyHeroes, Scanner sc) {
+    private static boolean ThePlayerWin(boolean enemyAlive, String activePlayer){
+        if (!enemyAlive) {
+            System.out.println("FELICIDADES! " + activePlayer + " ha ganado la partida!");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private static boolean isEnemyAlive(Hero[] enemyHeroes, boolean enemyAlive) {
+        for (Hero hero : enemyHeroes) {
+            if (hero != null && hero.isAlive()) {
+                enemyAlive = true;
+                break;
+            }
+        }
+        return enemyAlive;
+    }
+
+    private static void confirmDeath(Hero[] enemyHeroes, Integer enemy) {
+        if (!enemyHeroes[enemy].isAlive()) {
+            System.out.println(enemyHeroes[enemy].getSymbol() + " ha sido eliminado!");
+            board[enemyHeroes[enemy].getRow()][enemyHeroes[enemy].getCol()] = GameConfig.EMPTY;
+            enemyHeroes[enemy] = null;
+        }
+    }
+
+    private static boolean ifTheHeroIsAWizard(Hero heroe, Hero[] enemyHeroes, Integer enemy) {
+        boolean SuccefullAttack;
+        if (heroe instanceof Wizard) {
+            SuccefullAttack = ((Wizard) heroe).attackArea(enemyHeroes); // ataque en área
+        } else {
+            SuccefullAttack = heroe.attack(enemyHeroes[enemy]); // ataque normal
+        }
+        return SuccefullAttack;
+    }
+
+    private static Integer chooseHeroToHit(Hero[] enemyHeroes, Scanner sc) {
         boolean valid = false;
         int enemy = 0;
         while (!valid) {
@@ -195,7 +206,7 @@ public class Main extends Board {
         return enemy;
     }
 
-    private static Integer ChooseHeroToAttack(Hero[] activeHeroes, Scanner sc) {
+    private static Integer chooseHeroToAttack(Hero[] activeHeroes, Scanner sc) {
         boolean valid = false;
         int heroe1 = 0;
         while (!valid) {
@@ -211,7 +222,7 @@ public class Main extends Board {
         return heroe1;
     }
 
-    private static void ReplaceHeroOnBoard(int oldRow, int oldCol, int size, Hero activeHeroes) {
+    private static void replaceHeroOnBoard(int oldRow, int oldCol, int size, Hero activeHeroes) {
         board[oldRow][oldCol] = "[ ]";
         int newrow = activeHeroes.getRow();
         int newcol = activeHeroes.getCol();
@@ -219,7 +230,7 @@ public class Main extends Board {
         showBoard(size);
     }
 
-    private static void ShowValidMoves(int size, Hero activeHeroes) {
+    private static void showValidMoves(int size, Hero activeHeroes) {
         int[][] moves = activeHeroes.validMoves(size);
         for (int[] m : moves) {
             System.out.print("(" + (m[0]+1) + "," + (m[1]+1) + ") ");
@@ -227,7 +238,7 @@ public class Main extends Board {
         System.out.println();
     }
 
-    private static int ChooseTheHeroToMove(Hero[] activeHeroes, Scanner sc) {
+    private static int chooseTheHeroToMove(Hero[] activeHeroes, Scanner sc) {
         boolean valid = false;
         int heroe = 1;
         while (!valid){
@@ -243,7 +254,7 @@ public class Main extends Board {
         return heroe;
     }
 
-    private static void HeroesInitialization(boolean flag, Scanner sc, Hero[] hero1, Hero[] hero2, int size) {
+    private static void heroesInitialization(boolean flag, Scanner sc, Hero[] hero1, Hero[] hero2, int size) {
         while (flag){
             int option1 = getOption1(sc);
             if(option1 == 1){
@@ -271,7 +282,7 @@ public class Main extends Board {
         return sc.nextInt();
     }
 
-    private static String RandomPlayer(Players player1, Players player2) {
+    private static String randomPlayer(Players player1, Players player2) {
         String activePlayer;
         if (Math.random() < 0.5) {
             activePlayer = player1.getPlayerName();
@@ -290,7 +301,7 @@ public class Main extends Board {
         return sc.nextInt();
     }
 
-    private static void InitializerBoard(int size) {
+    private static void initializerBoard(int size) {
         initBoard(size); //inicializa el tablero con null []
         System.out.println();
         System.out.println("Usted selecciono el siguiente tablero:");
@@ -307,12 +318,13 @@ public class Main extends Board {
         hero[4] = new Killer(GameConfig.KILLER_HP , GameConfig.KILLER_SYMBOL);
         return hero;
     }
-    private static int GetBoardSize(int size, boolean flag, Scanner sc) {
+
+    private static int getBoardSize(int size, boolean flag, Scanner sc) {
         while (flag){
             System.out.print("digite el tamaño del tablero (5-20): ");
             size = sc.nextInt();
             if (size >= 5 && size <= 20) {
-                InitializerBoard(size);
+                initializerBoard(size);
                 flag = false;
             } else {
                 System.out.println("tamaño no valido");
@@ -378,5 +390,4 @@ public class Main extends Board {
                 T = Tanque
                 S = Asesino""");
     }
-
 }
