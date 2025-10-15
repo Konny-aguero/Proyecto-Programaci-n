@@ -1,10 +1,7 @@
 package ucr.ac.cr;
 import java.util.Scanner;
 import static ucr.ac.cr.GameConfig.*;
-
 public class Board {
-
-
     static String[][] board;
     static void initBoard(int size) {
         board = new String[size][size];
@@ -50,7 +47,6 @@ public class Board {
         }
     }
 
-
     static void PlaceHeroesManually(Hero[] hero1, Hero[] hero2, String[][] board, Scanner sc) {
         for (int h = 0; h < hero1.length; h++) {
             System.out.println("Turno del Jugador 1");
@@ -81,18 +77,22 @@ public class Board {
         }
     }
 
-
     static void placeHero(Hero[] heroes, String[][] board, Scanner sc, int player) {
         int option = 1;
         boolean validOption = false;
 
         while (!validOption) {
-            System.out.print("Héroe: ");
-            option = sc.nextInt() - 1; // -1 para ajustar al índice del array
-            if (option < 0 || option >= heroes.length || heroes[option].isPlaced()) {
-                System.out.println("Opción inválida, el héroe ya fue colocado o no existe. Intenta de nuevo.");
-            } else {
-                validOption = true;
+            try {
+                System.out.print("Héroe: ");
+                option = sc.nextInt() - 1; // -1 para ajustar al índice del array
+                if (option < 0 || option >= heroes.length || heroes[option].isPlaced()) {
+                    System.out.println("Opción inválida, el héroe ya fue colocado o no existe. Intenta de nuevo.");
+                } else {
+                    validOption = true;
+                }
+            } catch (Exception e) {
+                System.out.println("Entrada inválida. Por favor, ingresa un número.");
+                sc.next();
             }
         }
 

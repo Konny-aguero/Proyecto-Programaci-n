@@ -1,14 +1,9 @@
-
 package ucr.ac.cr;
-
 import java.util.Random;
-
 public class Tank extends Hero {
     public Tank(int hp, char symbol) {
         super(hp, symbol);
     }
-
-
     @Override
     public boolean move(int newRow, int newCol, int boardSize) {
 
@@ -58,6 +53,7 @@ public class Tank extends Hero {
         super.takeDamage(reduced);
     }
     @Override
+
     public int[][] validMoves(int boardSize) {
         int[][] moves = new int[4][2];
         int count = 0;
@@ -84,6 +80,4 @@ public class Tank extends Hero {
         for (int i = 0; i < count; i++) result[i] = moves[i];
         return result;
     }
-
-
 }

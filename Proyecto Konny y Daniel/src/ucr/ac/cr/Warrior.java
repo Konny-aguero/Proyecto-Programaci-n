@@ -1,15 +1,6 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package ucr.ac.cr;
-
 import java.util.Random;
-
 public class Warrior extends Hero {
-
-
     public Warrior(int hp, char symbol) {
         super(hp, symbol);
     }
@@ -59,6 +50,7 @@ public class Warrior extends Hero {
             return false;
         }
     }
+
     @Override
     public int[][] validMoves(int boardSize) {
         int[][] moves = new int[4][2];
@@ -79,11 +71,10 @@ public class Warrior extends Hero {
             moves[count++] = new int[]{r, c + 1};
 
         int[][] result = new int[count][2];
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++) {
             result[i] = moves[i];
+        }
 
         return result;
     }
-
-
 }

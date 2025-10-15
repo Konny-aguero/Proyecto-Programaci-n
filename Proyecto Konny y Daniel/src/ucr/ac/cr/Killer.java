@@ -1,11 +1,6 @@
-
 package ucr.ac.cr;
-
 import java.util.Random;
-
 public class Killer extends Hero {
-
-
     public Killer(int hp, char symbol) {
         super(hp, symbol);
     }
@@ -62,6 +57,7 @@ public class Killer extends Hero {
         return false;
     }
     @Override
+
     public int[][] validMoves(int boardSize) {
         int[][] moves = new int[4][2];
         int count = 0;
@@ -86,6 +82,4 @@ public class Killer extends Hero {
 
         return result;
     }
-
-
 }

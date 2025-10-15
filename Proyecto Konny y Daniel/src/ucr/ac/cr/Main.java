@@ -1,15 +1,15 @@
 package ucr.ac.cr;
 import java.util.Scanner;
-
 public class Main extends Board {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int size = 1;
         boolean flag = true;
         showMainMenu();
-        int option = sc.nextInt();
+        int option = 0;
+        option = getOption(flag, option, sc);
         switch (option) {
-            case (1):
+            case (1): //start new game
                 size = getBoardSize(size, flag, sc);
                 Players player1 = new Players("Player 1");
                 System.out.println("Digite el nombre del ejercito del jugador 1 (no se permiten espacios)");
@@ -18,19 +18,25 @@ public class Main extends Board {
                 Players player2 = new Players("Player 2");
                 System.out.println("Digite el nombre del ejercito del jugador 2 (no se permiten espacios)");
                 player2.setNameArmy(sc.next());
-                Hero[] hero2 = getHeroes(); System.out.println();
+                Hero[] hero2 = getHeroes();
+                System.out.println();
                 System.out.println("COLOCACION DE HEROES EN EL TABLERO");
-                heroesInitialization(flag, sc, hero1, hero2, size); System.out.println();
+                heroesInitialization(flag, sc, hero1, hero2, size);
+                System.out.println();
                 System.out.println("COMIENZA LA BATALLA");
                 System.out.println("Comienza el jugador: ");
-                String activePlayer; activePlayer = randomPlayer(player1, player2); System.out.println();
+                String activePlayer;
+                activePlayer = randomPlayer(player1, player2);
+                System.out.println();
                 boolean gameOn = true;
                 Hero[] activeHeroes;
                 Hero[] enemyHeroes;
                 if (activePlayer.equals(player1.getPlayerName())) {
-                    activeHeroes = hero1; enemyHeroes = hero2;
+                    activeHeroes = hero1;
+                    enemyHeroes = hero2;
                 } else {
-                    activeHeroes = hero2; enemyHeroes = hero1;
+                    activeHeroes = hero2;
+                    enemyHeroes = hero1;
                 }
                 while (gameOn) {
                     int action = getActionOfGame(activePlayer, player1, player2, sc);
@@ -51,10 +57,12 @@ public class Main extends Board {
                                     replaceHeroOnBoard(oldRow, oldCol, size, activeHeroes[heroe]);
                                     if (activePlayer.equals(player1.getPlayerName())) {
                                         activePlayer = player2.getPlayerName();
-                                        activeHeroes = hero2; enemyHeroes = hero1;
+                                        activeHeroes = hero2;
+                                        enemyHeroes = hero1;
                                     } else {
                                         activePlayer = player1.getPlayerName();
-                                        activeHeroes = hero1; enemyHeroes = hero2;
+                                        activeHeroes = hero1;
+                                        enemyHeroes = hero2;
                                     }
                                     System.out.println("Paso de turno");
                                     moved = true;
@@ -70,7 +78,7 @@ public class Main extends Board {
                             int oldCol1 = activeHeroes[heroe1].getCol();
                             Hero heroe = activeHeroes[heroe1];
                             boolean SuccefullAttack = ifTheHeroIsAWizard(heroe, enemyHeroes, enemy);
-                            if (SuccefullAttack){
+                            if (SuccefullAttack) {
                                 board[oldRow1][oldCol1] = GameConfig.EMPTY;
                                 int newrow = activeHeroes[heroe1].getRow();
                                 int newcol = activeHeroes[heroe1].getCol();
@@ -86,10 +94,12 @@ public class Main extends Board {
                             showBoard(size);
                             if (activePlayer.equals(player1.getPlayerName())) { //Cambio de turno
                                 activePlayer = player2.getPlayerName();
-                                activeHeroes = hero2; enemyHeroes = hero1;
+                                activeHeroes = hero2;
+                                enemyHeroes = hero1;
                             } else {
                                 activePlayer = player1.getPlayerName();
-                                activeHeroes = hero1; enemyHeroes = hero2;
+                                activeHeroes = hero1;
+                                enemyHeroes = hero2;
                             }
                             System.out.println("Paso de turno");
                             break;
@@ -99,21 +109,23 @@ public class Main extends Board {
                             Stats.showStats(activeHeroes[heroe2]);
                             break;
                         case 4:// skip turn
-                            if (activePlayer.equals(player1.getPlayerName())){
+                            if (activePlayer.equals(player1.getPlayerName())) {
                                 activePlayer = player2.getPlayerName();
-                                activeHeroes = hero2; enemyHeroes = hero1;
-                            }else{
+                                activeHeroes = hero2;
+                                enemyHeroes = hero1;
+                            } else {
                                 activePlayer = player1.getPlayerName();
-                                activeHeroes = hero1; enemyHeroes = hero2;
+                                activeHeroes = hero1;
+                                enemyHeroes = hero2;
                             }
                             System.out.println("Paso de turno");
                             break;
 
                         case 5: //Retirada
-                            System.out.print(activePlayer +" se ha retirado, gana: ");
-                            if (activePlayer.equals(player1.getPlayerName())){
+                            System.out.print(activePlayer + " se ha retirado, gana: ");
+                            if (activePlayer.equals(player1.getPlayerName())) {
                                 activePlayer = player2.getPlayerName();
-                            }else{
+                            } else {
                                 activePlayer = player1.getPlayerName();
                             }
                             System.out.print(activePlayer);
@@ -127,7 +139,7 @@ public class Main extends Board {
             case (2):
                 showInstructions(); //show instructions of game
                 break;
-            case(3):
+            case (3):
                 showHistory(); //show history of game
                 break;
             case (4):
@@ -135,6 +147,25 @@ public class Main extends Board {
             default:
                 System.out.println("opcion no valida");
         }
+    }
+
+    private static int getOption(boolean flag, int option, Scanner sc) {
+        while (flag) {
+            try {
+                option = sc.nextInt();
+                if (option >= 1 && option <= 4) {
+                    flag = false;
+                } else {
+                    System.out.println("Opcion invalida, intente nuevamente");
+                    showMainMenu();
+                }
+            } catch (Exception e) {
+                System.out.println("Opcion invalida, intente nuevamente");
+                sc.next(); // clear invalid input
+                showMainMenu();
+            }
+        }
+        return option;
     }
 
     private static Integer getHeroe2(Scanner sc, Hero[] activeHeroes) {
@@ -167,6 +198,8 @@ public class Main extends Board {
             if (hero != null && hero.isAlive()) {
                 enemyAlive = true;
                 break;
+            } else {
+                enemyAlive = false;
             }
         }
         return enemyAlive;
@@ -272,14 +305,29 @@ public class Main extends Board {
     }
 
     private static int getActionOfGame(String activePlayer, Players player1, Players player2, Scanner sc) {
+        boolean flag = false;
+        int opcion = 0;
         System.out.println("Turno del jugador: " + activePlayer + "(" + (activePlayer.equals(player1.getPlayerName()) ? player1.getNameArmy() : player2.getNameArmy()) + ")");
-        System.out.println("Seleccione una opción:");
-        System.out.println("1. Mover héroe");
-        System.out.println("2. Atacar con héroe");
-        System.out.println("3. Ver estadísticas");
-        System.out.println("4. Pasar turno");
-        System.out.println("5. Retirada");
-        return sc.nextInt();
+        while (!flag) {
+            try {
+                System.out.println("Seleccione una opción:");
+                System.out.println("1. Mover héroe");
+                System.out.println("2. Atacar con héroe");
+                System.out.println("3. Ver estadísticas");
+                System.out.println("4. Pasar turno");
+                System.out.println("5. Retirada");
+                opcion = sc.nextInt();
+                if (opcion >= 1 && opcion <= 5) {
+                    flag = true;
+                } else {
+                    System.out.println("Opcion invalida, intente nuevamente");
+                }
+            } catch (Exception e) {
+                System.out.println("Caracter invalido, intente nuevamente");
+                sc.next();
+            }
+        }
+        return opcion;
     }
 
     private static String randomPlayer(Players player1, Players player2) {
@@ -295,10 +343,25 @@ public class Main extends Board {
     }
 
     private static int getOption1(Scanner sc) {
-        System.out.println("1.Colocar heroes manualmente");
-        System.out.println("2.Mantener posicion sugerida");
-        System.out.print("Selecciona una opción: ");
-        return sc.nextInt();
+        boolean flag = false;
+        int option1 = 0;
+        while (!flag) {
+            try {
+                System.out.println("1.Colocar heroes manualmente");
+                System.out.println("2.Mantener posicion sugerida");
+                System.out.print("Selecciona una opción: ");
+                option1 = sc.nextInt();
+                if (option1 == 1 || option1 == 2) {
+                    flag = true;
+                } else {
+                    System.out.println("Opcion invalida, intente nuevamente");
+                }
+            } catch (Exception e) {
+                System.out.println("Caracter invalido, intente nuevamente");
+                sc.next(); // clear invalid input
+            }
+        }
+        return option1;
     }
 
     private static void initializerBoard(int size) {
@@ -321,19 +384,24 @@ public class Main extends Board {
 
     private static int getBoardSize(int size, boolean flag, Scanner sc) {
         while (flag){
-            System.out.print("digite el tamaño del tablero (5-20): ");
-            size = sc.nextInt();
-            if (size >= 5 && size <= 20) {
-                initializerBoard(size);
-                flag = false;
-            } else {
-                System.out.println("tamaño no valido");
+            try {
+                System.out.print("digite el tamaño del tablero (5-20): ");
+                size = sc.nextInt();
+                if (size >= 5 && size <= 20) {
+                    initializerBoard(size);
+                    flag = false;
+                } else {
+                    System.out.println("tamaño no valido, intente nuevamente");
+                }
+            } catch (Exception e) {
+                System.out.println("caracter no valido, intente nuevamente");
+                sc.next();
             }
         }
         return size;
     }
 
-    public static void showMainMenu(){
+    private static void showMainMenu(){
         System.out.println("              ▛▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝▝ ▜");
         System.out.println("                  ⚔  ARENA DE HÉROES  ⚔");
         System.out.println("              ▙ ▖▖▖▖▖▖▖▖▖▖▖▖▖▖▖▖▖▖▖▖▖▖▖▖▖▖▖▟");
@@ -346,7 +414,7 @@ public class Main extends Board {
         System.out.print("Selecciona una opción: ");
     }
 
-    public static void showHistory(){
+    private static void showHistory(){
         System.out.println("📖 Historia de Arena de Héroes");
         System.out.println("Hace siglos, el mundo estaba dividido en reinos que vivían en constante guerra.");
         System.out.println("Los más poderosos buscaban conquistar tierras, dominar recursos y someter a sus rivales.");
@@ -377,7 +445,7 @@ public class Main extends Board {
         System.out.println("“Que los dioses de la Arena guíen tu estrategia… y que tu ejército sea recordado como leyenda.”");
     }
 
-    public static void showInstructions(){
+    private static void showInstructions(){
         System.out.println("Cada jugador controla un ejército de héroes que se colocan en un tablero cuadrado configurable (entre 5x5 y 20x20).");
         System.out.println("Los héroes se enfrentan por turnos, moviéndose y atacando según sus habilidades y debilidades.");
         System.out.println("El objetivo es eliminar todas las piezas rivales o lograr su rendición.");

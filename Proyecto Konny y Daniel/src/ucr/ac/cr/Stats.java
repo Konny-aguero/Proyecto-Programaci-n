@@ -1,7 +1,5 @@
 package ucr.ac.cr;
-
 public class Stats {
-
     public static void showStats(Hero hero) {
         System.out.println("=== Estadísticas del héroe ===");
         System.out.println("Tipo: " + hero.getClass().getSimpleName());
@@ -14,5 +12,4 @@ public class Stats {
         System.out.println("Enemigos eliminados: " + hero.getKills());
         System.out.println("=============================");
     }
-
 }

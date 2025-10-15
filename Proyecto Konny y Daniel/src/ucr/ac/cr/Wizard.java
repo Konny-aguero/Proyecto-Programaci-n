@@ -1,8 +1,6 @@
 package ucr.ac.cr;
 import java.util.Random;
-
 public class Wizard extends Hero {
-
     public Wizard(int hp, char symbol) {
         super(hp, symbol);
     }
@@ -42,6 +40,7 @@ public class Wizard extends Hero {
             return false;
         }
     }
+
     public boolean attackArea(Hero[] enemies) {
         boolean atacado = false;
 
@@ -87,5 +86,4 @@ public class Wizard extends Hero {
         for (int i = 0; i < count; i++) result[i] = moves[i];
         return result;
     }
-
 }

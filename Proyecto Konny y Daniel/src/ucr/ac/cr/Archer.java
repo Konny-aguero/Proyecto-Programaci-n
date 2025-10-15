@@ -1,9 +1,6 @@
 package ucr.ac.cr;
-
 import java.util.Random;
-
 public class Archer extends Hero {
-
     public Archer(int hp, char symbol) {
         super(hp, symbol);
     }
@@ -71,5 +68,4 @@ public class Archer extends Hero {
         for (int i = 0; i < count; i++) result[i] = moves[i];
         return result;
     }
-
 }

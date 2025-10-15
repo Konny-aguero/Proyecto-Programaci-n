@@ -1,5 +1,4 @@
 package ucr.ac.cr;
-
 public abstract class Hero {
     private int hp;
     private int row;
@@ -30,7 +29,6 @@ public abstract class Hero {
     public int[][] validMoves(int boardSize) {
         return new int[0][0];
     }
-
 
     public void takeDamage(int dmg) {
         this.hp = hp - dmg;
@@ -66,14 +64,12 @@ public abstract class Hero {
     public int getMoves() {
         return moves;
     }
-
     public void setRow(int row) {
         this.row = row;
     }
     public void setCol(int col) {
         this.col = col;
     }
-
     public void addMove() { this.moves++; }
     public void addDamageDealt(int dmg) { this.damageDealt += dmg; }
     public void addKill() { this.kills++; }
