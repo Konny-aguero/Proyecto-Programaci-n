@@ -29,8 +29,7 @@ public class Archer extends Hero {
         int distancia = Math.max(Math.abs(rowDiff), Math.abs(colDiff));
 
         if (enLinea && distancia >= 1 && distancia <= 3) {
-            Random rand = new Random();
-            int damage = 5 + rand.nextInt(3);
+            int damage = 5 + (int)(Math.random() * 3);
 
             if (target instanceof Tank) damage += 2;
             if (target instanceof Warrior) damage -= 1;

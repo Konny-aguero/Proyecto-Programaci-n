@@ -30,8 +30,7 @@ public class Tank extends Hero {
         int colDifference = Math.abs(target.getCol() - getCol());
 
         if ((rowDifference == 1 && colDifference == 0) || (rowDifference == 0 && colDifference == 1)) {
-            Random rand = new Random();
-            int damage = 3 + rand.nextInt(2);
+            int damage = 3 + (int)(Math.random() * 2);
 
             target.takeDamage(damage);
             addDamageDealt(damage);

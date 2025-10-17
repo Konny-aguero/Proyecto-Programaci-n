@@ -30,9 +30,7 @@ public class Warrior extends Hero {
         int colDifference = Math.abs(target.getCol() - getCol());
 
         if ((rowDifference == 1 && colDifference == 0) || (rowDifference == 0 && colDifference == 1)) {
-            Random rand = new Random();
-            int damage = 6 + rand.nextInt(3);
-
+            int damage = 6 + (int)(Math.random() * 3);
             // Si el enemigo es Mago, recibir más daño
             if (target instanceof Wizard) {
                 damage += 2;  // bonificación por debilidad

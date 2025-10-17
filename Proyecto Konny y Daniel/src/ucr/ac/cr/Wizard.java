@@ -25,8 +25,8 @@ public class Wizard extends Hero {
         int rowDiff = target.getRow() - getRow();
         int colDiff = target.getCol() - getCol();
         if (Math.abs(rowDiff) <= 1 && Math.abs(colDiff) <= 1) {
-            Random rand = new Random();
-            int damage = 4 + rand.nextInt(4);
+            int damage = 4 + (int)(Math.random() * 4);
+
 
             if (target instanceof Warrior) damage += 2;
 

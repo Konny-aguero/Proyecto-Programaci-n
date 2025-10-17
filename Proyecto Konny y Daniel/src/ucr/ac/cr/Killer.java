@@ -32,11 +32,11 @@ public class Killer extends Hero {
             return false;
         }
 
-        Random rand = new Random();
+
         int totalDamage = 0;
 
         for (int i = 0; i < 2; i++) {
-            int damage = 7 + rand.nextInt(3);
+            int damage = 7 + (int)(Math.random() * 3);
 
             if (target instanceof Archer || target instanceof Wizard) {
                 damage += 3;
