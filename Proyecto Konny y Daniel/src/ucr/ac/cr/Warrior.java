@@ -1,5 +1,4 @@
 package ucr.ac.cr;
-import java.util.Random;
 public class Warrior extends Hero {
     public Warrior(int hp, char symbol) {
         super(hp, symbol);

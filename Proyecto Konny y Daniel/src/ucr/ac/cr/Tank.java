@@ -1,5 +1,4 @@
 package ucr.ac.cr;
-import java.util.Random;
 public class Tank extends Hero {
     public Tank(int hp, char symbol) {
         super(hp, symbol);
