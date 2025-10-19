@@ -74,15 +74,9 @@ public class Main extends Board {
                         case 2: // Attack with hero
                             Integer heroe1 = chooseHeroToAttack(activeHeroes, sc);
                             Integer enemy = chooseHeroToHit(enemyHeroes, sc);
-                            int oldRow1 = activeHeroes[heroe1].getRow();
-                            int oldCol1 = activeHeroes[heroe1].getCol();
                             Hero heroe = activeHeroes[heroe1];
                             boolean SuccefullAttack = ifTheHeroIsAWizard(heroe, enemyHeroes, enemy);
                             if (SuccefullAttack) {
-                                board[oldRow1][oldCol1] = GameConfig.EMPTY;
-                                int newrow = activeHeroes[heroe1].getRow();
-                                int newcol = activeHeroes[heroe1].getCol();
-                                board[newrow][newcol] = "[" + activeHeroes[heroe1].getSymbol() + "]";
                                 confirmDeath(enemyHeroes, enemy);
                                 boolean enemyAlive = false;
                                 enemyAlive = isEnemyAlive(enemyHeroes, enemyAlive);
