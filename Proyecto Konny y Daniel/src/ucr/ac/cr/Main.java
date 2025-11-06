@@ -39,9 +39,9 @@ public class Main extends Board {
                     enemyHeroes = hero1;
                 }
                 while (gameOn) {
-                    int action = getActionOfGame(activePlayer, player1, player2, sc);
-                    switch (action) {
-                        case 1: // Move hero
+                    Command action = getActionOfGame(activePlayer, player1, player2, sc);
+                    switch (action.action) {
+                        case "move": // Move hero
                             boolean moved = false;
                             while (!moved) {
                                 int heroe = chooseTheHeroToMove(activeHeroes, sc);
@@ -71,7 +71,7 @@ public class Main extends Board {
                                 }
                             }
                             break;
-                        case 2: // Attack with hero
+                        case "attack": // Attack with hero
                             Integer heroe1 = chooseHeroToAttack(activeHeroes, sc);
                             Integer enemy = chooseHeroToHit(enemyHeroes, sc);
                             Hero heroe = activeHeroes[heroe1];
@@ -97,12 +97,12 @@ public class Main extends Board {
                             }
                             System.out.println("Paso de turno");
                             break;
-                        case 3: // Show stats
+                        case "stats": // Show stats
                             Board.showAvailableHeroes(activeHeroes);
                             Integer heroe2 = getHeroe2(sc, activeHeroes);
                             Stats.showStats(activeHeroes[heroe2]);
                             break;
-                        case 4:// skip turn
+                        case "pass":// skip turn
                             if (activePlayer.equals(player1.getPlayerName())) {
                                 activePlayer = player2.getPlayerName();
                                 activeHeroes = hero2;
@@ -115,7 +115,7 @@ public class Main extends Board {
                             System.out.println("Paso de turno");
                             break;
 
-                        case 5: //Retirada
+                        case "retreat": //Retirada
                             System.out.print(activePlayer + " se ha retirado, gana: ");
                             if (activePlayer.equals(player1.getPlayerName())) {
                                 activePlayer = player2.getPlayerName();
@@ -298,31 +298,56 @@ public class Main extends Board {
         }
     }
 
-    private static int getActionOfGame(String activePlayer, Players player1, Players player2, Scanner sc) {
+    private static Command getActionOfGame(String activePlayer, Players player1, Players player2, Scanner sc) {
         boolean flag = false;
-        int opcion = 0;
+        Command cmd= null;
+        String line;
+
         System.out.println("Turno del jugador: " + activePlayer + "(" + (activePlayer.equals(player1.getPlayerName()) ? player1.getNameArmy() : player2.getNameArmy()) + ")");
         while (!flag) {
             try {
-                System.out.println("Seleccione una opción:");
-                System.out.println("1. Mover héroe");
-                System.out.println("2. Atacar con héroe");
-                System.out.println("3. Ver estadísticas");
-                System.out.println("4. Pasar turno");
-                System.out.println("5. Retirada");
-                opcion = sc.nextInt();
-                if (opcion >= 1 && opcion <= 5) {
+                System.out.println("Escribe tu comando " +
+                        "(por ejemplo: mover H1 2 3, atacar H1 E3, stats H1, pasar, rendirse):");
+                line = sc.nextLine().trim();
+                cmd = CommandParser.parse(line);
+                if (!cmd.action.equals("invalid")) {
                     flag = true;
                 } else {
-                    System.out.println("Opcion invalida, intente nuevamente");
+                    System.out.println("Opcion invalida, intente nuevamente. Ejemplo: mover H1 2 3");
                 }
             } catch (Exception e) {
                 System.out.println("Caracter invalido, intente nuevamente");
                 sc.next();
             }
         }
-        return opcion;
+        return cmd;
     }
+
+//    private static int getActionOfGame(String activePlayer, Players player1, Players player2, Scanner sc) {
+//        boolean flag = false;
+//        int opcion = 0;
+//        System.out.println("Turno del jugador: " + activePlayer + "(" + (activePlayer.equals(player1.getPlayerName()) ? player1.getNameArmy() : player2.getNameArmy()) + ")");
+//        while (!flag) {
+//            try {
+//                System.out.println("Seleccione una opción:");
+//                System.out.println("1. Mover héroe");
+//                System.out.println("2. Atacar con héroe");
+//                System.out.println("3. Ver estadísticas");
+//                System.out.println("4. Pasar turno");
+//                System.out.println("5. Retirada");
+//                opcion = sc.nextInt();
+//                if (opcion >= 1 && opcion <= 5) {
+//                    flag = true;
+//                } else {
+//                    System.out.println("Opcion invalida, intente nuevamente");
+//                }
+//            } catch (Exception e) {
+//                System.out.println("Caracter invalido, intente nuevamente");
+//                sc.next();
+//            }
+//        }
+//        return opcion;
+//    }
 
     private static String randomPlayer(Players player1, Players player2) {
         String activePlayer;
