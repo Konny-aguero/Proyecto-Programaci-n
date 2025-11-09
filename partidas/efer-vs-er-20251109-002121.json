@@ -1,0 +1,127 @@
+{
+  "size" : 5,
+  "jugador1" : {
+    "nameArmy" : "efer",
+    "playerName" : "Player 1"
+  },
+  "jugador2" : {
+    "nameArmy" : "er",
+    "playerName" : "Player 2"
+  },
+  "heroes1" : [ {
+    "hp" : 10,
+    "row" : 0,
+    "col" : 0,
+    "symbol" : "A",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "hp" : 15,
+    "row" : 0,
+    "col" : 1,
+    "symbol" : "G",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "hp" : 8,
+    "row" : 0,
+    "col" : 2,
+    "symbol" : "M",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "hp" : 20,
+    "row" : 0,
+    "col" : 3,
+    "symbol" : "T",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "hp" : 9,
+    "row" : 0,
+    "col" : 4,
+    "symbol" : "S",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  } ],
+  "heroes2" : [ {
+    "hp" : 10,
+    "row" : 4,
+    "col" : 0,
+    "symbol" : "A",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "hp" : 15,
+    "row" : 4,
+    "col" : 1,
+    "symbol" : "G",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "hp" : 8,
+    "row" : 4,
+    "col" : 2,
+    "symbol" : "M",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "hp" : 20,
+    "row" : 4,
+    "col" : 3,
+    "symbol" : "T",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "hp" : 9,
+    "row" : 4,
+    "col" : 4,
+    "symbol" : "S",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  } ],
+  "jugadorActivo" : "Player 1",
+  "numeroTurno" : 1,
+  "juegoActivo" : true,
+  "rutaArchivo" : "partidas/efer-vs-er-20251109-002121.json"
+}

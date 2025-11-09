@@ -38,6 +38,8 @@ public class Main extends Board {
                     activeHeroes = hero2;
                     enemyHeroes = hero1;
                 }
+                Juego juego = new Juego(size, player1, player2, hero1, hero2, activePlayer);
+                //juego.guardarEstado();
                 while (gameOn) {
                     Command action = getActionOfGame(activePlayer, player1, player2, sc);
                     switch (action.action) {
