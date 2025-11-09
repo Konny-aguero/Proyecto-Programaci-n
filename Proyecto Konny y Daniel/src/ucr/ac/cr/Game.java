@@ -1,13 +1,6 @@
 package ucr.ac.cr;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-public class Juego {
+public class Game {
 
     private int size;
     private Players player1;
@@ -19,7 +12,7 @@ public class Juego {
     private boolean activegame;
     private String path;
 
-    public Juego(int size, Players player1, Players player2, Hero[] heroes1, Hero[] heroes2, String activeplayer) {
+    public Game(int size, Players player1, Players player2, Hero[] heroes1, Hero[] heroes2, String activeplayer) {
         this.size = size;
         this.player1 = player1;
         this.player2 = player2;
@@ -31,7 +24,7 @@ public class Juego {
         this.path = path;
     }
 //
-//    public Juego() {}
+//    public Game() {}
 //
 //    // ===================== MÉTODOS PRINCIPALES =====================
 //
@@ -50,10 +43,10 @@ public class Juego {
 //    }
 //
 //    /** Carga un juego desde un archivo JSON */
-//    public static Juego cargarDesdeArchivo(String ruta) {
+//    public static Game cargarDesdeArchivo(String ruta) {
 //        ObjectMapper mapper = new ObjectMapper();
 //        try {
-//            Juego juego = mapper.readValue(new File(ruta), Juego.class);
+//            Game juego = mapper.readValue(new File(ruta), Game.class);
 //            System.out.println("✅ Partida cargada desde: " + ruta);
 //            return juego;
 //        } catch (IOException e) {
