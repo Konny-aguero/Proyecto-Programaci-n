@@ -44,40 +44,96 @@ public class Main extends Board {
                         case "move": // Move hero
                             boolean moved = false;
                             while (!moved) {
-                                int heroe = chooseTheHeroToMove(activeHeroes, sc);
-                                System.out.println("Casillas válidas para mover:");
-                                showValidMoves(size, activeHeroes[heroe]);
-                                System.out.println("Ingrese la fila: ");
-                                int row1 = sc.nextInt() - 1;
-                                System.out.println("Ingrese la columna: ");
-                                int colum1 = sc.nextInt() - 1;
-                                int oldRow = activeHeroes[heroe].getRow();
-                                int oldCol = activeHeroes[heroe].getCol();
-                                if (activeHeroes[heroe].move(row1, colum1, size)) {
-                                    replaceHeroOnBoard(oldRow, oldCol, size, activeHeroes[heroe]);
-                                    if (activePlayer.equals(player1.getPlayerName())) {
-                                        activePlayer = player2.getPlayerName();
-                                        activeHeroes = hero2;
-                                        enemyHeroes = hero1;
-                                    } else {
-                                        activePlayer = player1.getPlayerName();
-                                        activeHeroes = hero1;
-                                        enemyHeroes = hero2;
-                                    }
-                                    System.out.println("Paso de turno");
-                                    moved = true;
+                                String heroe = action.parameters[0];
+                                int heroIndex;
+                                char letra = Character.toUpperCase(heroe.charAt(0));
+                                if (letra == 'A') {
+                                    heroIndex = 0;
+                                } else if (letra == 'G') {
+                                    heroIndex = 1;
+                                } else if (letra == 'M') {
+                                    heroIndex = 2;
+                                } else if (letra == 'T') {
+                                    heroIndex = 3;
+                                } else if (letra == 'S') {
+                                    heroIndex = 4;
                                 } else {
-                                    showBoard(size);
+                                    System.out.println("Héroe inválido. Usa A, G, M, T o S. Intente nuevamente...");
+                                    break;
+                                }
+                                try {
+                                    int row = Integer.parseInt(action.parameters[1]) - 1;
+                                    int column = Integer.parseInt(action.parameters[2]) - 1;
+//                                System.out.println("Casillas válidas para mover:");
+//                                showValidMoves(size, activeHeroes[(heroIndex)]);
+                                    int oldRow = activeHeroes[(heroIndex)].getRow();
+                                    int oldCol = activeHeroes[(heroIndex)].getCol();
+                                    if (activeHeroes[(heroIndex)].move(row, column, size)) {
+                                        replaceHeroOnBoard(oldRow, oldCol, size, activeHeroes[(heroIndex)]);
+
+                                        if (activePlayer.equals(player1.getPlayerName())) {
+                                            activePlayer = player2.getPlayerName();
+                                            activeHeroes = hero2;
+                                            enemyHeroes = hero1;
+                                        } else {
+                                            activePlayer = player1.getPlayerName();
+                                            activeHeroes = hero1;
+                                            enemyHeroes = hero2;
+                                        }
+                                        System.out.println("Paso de turno");
+                                        moved = true;
+                                    } else {
+                                        showBoard(size);
+                                        moved = true;
+                                    }
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Fila y columna deben ser números. Intente nuevamente...");
+                                    break;
                                 }
                             }
                             break;
                         case "attack": // Attack with hero
-                            Integer heroe1 = chooseHeroToAttack(activeHeroes, sc);
-                            Integer enemy = chooseHeroToHit(enemyHeroes, sc);
-                            Hero heroe = activeHeroes[heroe1];
-                            boolean SuccefullAttack = ifTheHeroIsAWizard(heroe, enemyHeroes, enemy);
+                            String heroe1 = action.parameters[0];
+                            String enemy = action.parameters[1];
+
+                            int heroIndex;
+                            int enemyIndex;
+
+                            char letra = Character.toUpperCase(heroe1.charAt(0));
+                            if (letra == 'A') {
+                                heroIndex = 0;
+                            } else if (letra == 'G') {
+                                heroIndex = 1;
+                            } else if (letra == 'M') {
+                                heroIndex = 2;
+                            } else if (letra == 'T') {
+                                heroIndex = 3;
+                            } else if (letra == 'S') {
+                                heroIndex = 4;
+                            } else {
+                                System.out.println("Héroe inválido. Usa A, G, M, T o S. Intente nuevamente...");
+                                break;
+                            }
+
+                            char letra1 = Character.toUpperCase(enemy.charAt(0));
+                            if (letra1 == 'A') {
+                                enemyIndex = 0;
+                            } else if (letra1 == 'G') {
+                                enemyIndex = 1;
+                            } else if (letra1 == 'M') {
+                                enemyIndex = 2;
+                            } else if (letra1 == 'T') {
+                                enemyIndex = 3;
+                            } else if (letra1 == 'S') {
+                                enemyIndex = 4;
+                            } else {
+                                System.out.println("Enemigo inválido. Usa A, G, M, T o S. Intente nuevamente...");
+                                break;
+                            }
+                            Hero heroe = activeHeroes[heroIndex];
+                            boolean SuccefullAttack = ifTheHeroIsAWizard(heroe, enemyHeroes, enemyIndex);
                             if (SuccefullAttack) {
-                                confirmDeath(enemyHeroes, enemy);
+                                confirmDeath(enemyHeroes, enemyIndex);
                                 boolean enemyAlive = false;
                                 enemyAlive = isEnemyAlive(enemyHeroes, enemyAlive);
                                 gameOn = ThePlayerWin(enemyAlive, activePlayer);
@@ -98,10 +154,25 @@ public class Main extends Board {
                             System.out.println("Paso de turno");
                             break;
                         case "stats": // Show stats
-                            Board.showAvailableHeroes(activeHeroes);
-                            Integer heroe2 = getHeroe2(sc, activeHeroes);
-                            Stats.showStats(activeHeroes[heroe2]);
-                            break;
+                            String heroe2 = action.parameters[0];
+                            int heroIndex1;
+                            char letra2 = Character.toUpperCase(heroe2.charAt(0));
+                                if (letra2 == 'A') {
+                                    heroIndex1 = 0;
+                                } else if (letra2 == 'G') {
+                                    heroIndex1 = 1;
+                                } else if (letra2 == 'M') {
+                                    heroIndex1 = 2;
+                                } else if (letra2 == 'T') {
+                                    heroIndex1 = 3;
+                                } else if (letra2 == 'S') {
+                                    heroIndex1 = 4;
+                                } else {
+                                    System.out.println("Héroe inválido. Usa A, G, M, T o S. Intente nuevamente...");
+                                    break;
+                                }
+                                Stats.showStats(activeHeroes[heroIndex1]);
+                                break;
                         case "pass":// skip turn
                             if (activePlayer.equals(player1.getPlayerName())) {
                                 activePlayer = player2.getPlayerName();
@@ -296,6 +367,7 @@ public class Main extends Board {
                 System.out.println("Opcion invalida");
             }
         }
+        sc.nextLine();
     }
 
     private static Command getActionOfGame(String activePlayer, Players player1, Players player2, Scanner sc) {

@@ -8,6 +8,11 @@ public class Archer extends Hero {
     public boolean move(int newRow, int newCol, int boardSize) {
         if (Math.abs(newRow - getRow()) <= 1 && Math.abs(newCol - getCol()) <= 1) {
             if (isInsideBoard(newRow, newCol, boardSize)) {
+
+                if (!Board.board[newRow][newCol].equals("[ ]")) {
+                    System.out.println("❌ Movimiento inválido: la casilla (" + (newRow+1) + "," + (newCol+1) + ") está ocupada por otro héroe.");
+                    return false;
+                }
                 setRow(newRow);
                 setCol(newCol);
                 addMove();
