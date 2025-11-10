@@ -503,6 +503,7 @@ public class Main extends Board {
         System.out.println("              2. Ver instrucciones del juego");
         System.out.println("              3. Ver historia");
         System.out.println("              4. Salir");
+        System.out.println("              5. Cargar partida");
         System.out.println();
         System.out.print("Selecciona una opción: ");
     }
