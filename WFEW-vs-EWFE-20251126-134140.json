@@ -1,11 +1,11 @@
 {
   "size" : 5,
-  "jugador1" : {
-    "nameArmy" : "efer",
+  "player1" : {
+    "nameArmy" : "WFEW",
     "playerName" : "Player 1"
   },
-  "jugador2" : {
-    "nameArmy" : "er",
+  "player2" : {
+    "nameArmy" : "EWFE",
     "playerName" : "Player 2"
   },
   "heroes1" : [ {
@@ -120,8 +120,8 @@
     "placed" : false,
     "alive" : true
   } ],
-  "jugadorActivo" : "Player 1",
-  "numeroTurno" : 1,
-  "juegoActivo" : true,
-  "rutaArchivo" : "partidas/efer-vs-er-20251109-002121.json"
+  "activeplayer" : "Player 1",
+  "turn" : 1,
+  "activegame" : false,
+  "path" : "WFEW-vs-EWFE-20251126-134140.json"
 }

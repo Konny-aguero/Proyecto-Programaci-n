@@ -1,5 +1,13 @@
 package ucr.ac.cr;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
+import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
 public class Game {
 
     private int size;
@@ -12,6 +20,7 @@ public class Game {
     private boolean activegame;
     private String path;
 
+
     public Game(int size, Players player1, Players player2, Hero[] heroes1, Hero[] heroes2, String activeplayer) {
         this.size = size;
         this.player1 = player1;
@@ -19,29 +28,31 @@ public class Game {
         this.heroes1 = heroes1;
         this.heroes2 = heroes2;
         this.activeplayer = activeplayer;
-        this.turn = turn;
-        this.activegame = activegame;
-        this.path = path;
+        this.turn = 1;
+        this.activegame= true;
+
+        setPath(player1.getNameArmy() + "-vs-" + player2.getNameArmy() + "-" +
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss")) + ".json");
     }
-//
-//    public Game() {}
-//
-//    // ===================== MÉTODOS PRINCIPALES =====================
-//
-//    /** Guarda el estado completo del juego en un archivo JSON */
-//    public void guardarEstado() {
-//        ObjectMapper mapper = new ObjectMapper();
-//        mapper.enable(SerializationFeature.INDENT_OUTPUT); // JSON bonito
-//        try {
-//            File archivo = new File(path);
-//            archivo.getParentFile().mkdirs(); // crea carpeta /partidas si no existe
-//            mapper.writeValue(archivo, this);
-//            System.out.println("💾 Estado del juego guardado en: " + path);
-//        } catch (IOException e) {
-//            System.out.println("⚠ Error al guardar el estado del juego: " + e.getMessage());
-//        }
-//    }
-//
+
+
+    public void guardarJson() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            if (getPath() == null || getPath().isEmpty()) {
+                setPath(player1.getNameArmy() + "-vs-" + player2.getNameArmy() + "-" +
+                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss")) + ".json");
+            }
+            mapper.writeValue(new File(getPath()), this);
+            System.out.println("Partida guardada en: " + getPath());
+        } catch (Exception e) {
+            System.out.println("Error al guardar la partida: " + e.getMessage());
+        }
+    }
+
+
+
 //    /** Carga un juego desde un archivo JSON */
 //    public static Game cargarDesdeArchivo(String ruta) {
 //        ObjectMapper mapper = new ObjectMapper();
