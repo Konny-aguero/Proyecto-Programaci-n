@@ -20,9 +20,16 @@ Notas:
 - Si aparece error de "comando no encontrado", verifique que el JDK esté instalado.
 
 
-- Descripción de nuevas clases v2 - //TODO-------------------------------------
+- Descripción de nuevas clases v2 -
 
+ * Command
+ Agrega las variables y el constructor necesario para la construccion del comando lineal en consola
 
+ * CommandParser
+ Contiene el metodo con todas las reglas y restriccioes para poder escribir el comando lineal
+
+ * Game
+ Contiene los metodos y variables necesarios para exportar el HTML, guardar la partida en un JSON y poder cargar el JSON
 
 - Ejemplos de uso (3 comandos típicos) -
 
@@ -43,8 +50,8 @@ Para que el jugador pueda ver las estadisticas puede hacerlo de las siguientes f
 1. estadisticas T
 2. stats A
 
-Ruta del archivo de guardado //TODO---------------------------------
+Ruta del archivo de guardado
+Todos los JSON de las partidas son guardados automaticamente en el archivo raiz del proyecto (Proyecto-Programaci-n)
 
-
-Ruta del HTML con el informe //TODO---------------------------------
-
+Ruta del HTML con el informe
+El archivo HTML de las partidas es guardado automaticamente en el archivo raiz del proyecto (Proyecto-Programaci-n)
