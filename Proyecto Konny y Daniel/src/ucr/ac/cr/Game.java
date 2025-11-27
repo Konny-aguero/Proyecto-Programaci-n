@@ -2,8 +2,9 @@ package ucr.ac.cr;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
-import java.io.File;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class Game {
@@ -17,7 +18,9 @@ public class Game {
     private int turn;
     private boolean activegame;
     private String path;
-    public Game(){
+    private String pathHtml;
+
+    public Game() {
     }
 
     public Game(int size, Players player1, Players player2, Hero[] heroes1, Hero[] heroes2, String activeplayer) {
@@ -29,7 +32,9 @@ public class Game {
         this.activeplayer = activeplayer;
         this.turn = 1;
         this.activegame= true;
+
         setPath(player1.getNameArmy() + "-vs-" + player2.getNameArmy()+ ".json");
+        setPathHtml(player1.getNameArmy() + "-vs-" + player2.getNameArmy() + "-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss")) + ".html");
     }
 
     public void guardarJson() {
@@ -40,7 +45,6 @@ public class Game {
                 setPath(player1.getNameArmy() + "-vs-" + player2.getNameArmy()+ ".json");
             }
             mapper.writeValue(new File(getPath()), this);
-            System.out.println("Partida guardada en: " + getPath());
         } catch (Exception e) {
             System.out.println("Error al guardar la partida: " + e.getMessage());
         }
@@ -59,6 +63,92 @@ public class Game {
         } catch (Exception e) {
             System.out.println("Error al cargar la partida: " + e.getMessage());
             return null;
+        }
+    }
+
+    public void exportToHTML() {
+        try {
+            StringBuilder template = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(new FileReader("template.html"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    template.append(line).append("\n");
+                }
+            }
+
+            StringBuilder posiciones = new StringBuilder();
+            posiciones.append("<tr><th>Jugador</th>\n" +
+                    "            <th>Tipo</th>\n" +
+                    "            <th>HP</th>\n" +
+                    "            <th>Fila</th>\n" +
+                    "            <th>Columna</th></tr>");
+
+            addStrToHtml(posiciones, heroes1, player1, "p1");
+            addStrToHtml(posiciones, heroes2, player2, "p2");
+
+            posiciones.append("</table>");
+
+            StringBuilder stats = new StringBuilder();
+            stats.append("<table>");
+            stats.append("<tr>" +
+                    "<th>Jugador</th>" +
+                    "<th>Héroes vivos</th>" +
+                    "<th>Daño infligido</th>" +
+                    "<th>Daño recibido</th>" +
+                    "<th>Bajas</th>" +
+                    "</tr>");
+
+
+            addStrToStats(stats, heroes1, player1, "p1");
+            addStrToStats(stats, heroes2, player2, "p2");
+
+            stats.append("</table>");
+
+            String html = template.toString()
+                    .replace("{{turno_actual}}", String.valueOf(turn))
+                    .replace("{{jugador_1}}", player1.getNameArmy())
+                    .replace("{{jugador_2}}", player2.getNameArmy())
+                    .replace("{{tabla_posiciones}}", posiciones.toString())
+                    .replace("{{tabla_estadisticas}}", stats.toString());
+
+
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPathHtml()))) {
+                writer.write(html);
+            }
+
+            } catch (Exception e) {
+                System.out.println("Error al exportar la partida: " + e.getMessage());
+            }
+    }
+
+    private void addStrToStats(StringBuilder stats, Hero[] heroes1, Players player1, String cssClass) {
+        for (Hero h : heroes1) {
+            if (h != null) {
+                stats.append("<tr class='").append(cssClass).append("'>")
+                        .append("<td>").append(player1.getNameArmy()).append("</td>")
+                        .append("<td>").append(h.getSymbol() == 'A' ? "Arquero" : h.getSymbol() == 'G' ? "Guerrero" : h.getSymbol() == 'M' ? "Mago" : h.getSymbol() == 'T' ? "Tanque" : h.getSymbol() == 'S' ? "Asesino" : "Desconocido")
+                        .append("</td>")
+                        .append("<td>").append(h.getDamageDealt()).append("</td>")
+                        .append("<td>").append(h.getDamageTaken()).append("</td>")
+                        .append("<td>").append(h.getKills()).append("</td>")
+                        .append("</tr>");
+            }
+        }
+    }
+
+    private void addStrToHtml(StringBuilder posiciones, Hero[] heroes2, Players player2, String cssClass) {
+        for (Hero h : heroes2) {
+            if (h != null) {
+                posiciones.append("<tr class='").append(cssClass).append("'>")
+                        .append("<td>").append(player2.getNameArmy()).append("</td>")
+                        .append("<td>").append(h.getSymbol() == 'A' ? "Arquero" : h.getSymbol() == 'G' ? "Guerrero" : h.getSymbol() == 'M' ? "Mago" : h.getSymbol() == 'T' ? "Tanque" : h.getSymbol() == 'S' ? "Asesino" : "Desconocido")
+                        .append("</td>")
+                        .append("<td>").append(h.getHp()).append("</td>")
+                        .append("<td>").append(h.getRow()+1).append("</td>")
+                        .append("<td>").append(h.getCol()+1).append("</td>")
+                        .append("</tr>");
+            }
         }
     }
 
@@ -132,5 +222,13 @@ public class Game {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getPathHtml() {
+        return pathHtml;
+    }
+
+    public void setPathHtml(String pathhtml) {
+        this.pathHtml = pathhtml;
     }
 }

@@ -62,31 +62,4 @@ public class Warrior extends Hero {
             return false;
         }
     }
-
-    @Override
-    public int[][] validMoves(int boardSize) {
-        int[][] moves = new int[4][2];
-        int count = 0;
-        int r = getRow();
-        int c = getCol();
-
-        if (r > 0 && Board.isEmpty(r - 1, c))              // arriba
-            moves[count++] = new int[]{r - 1, c};
-
-        if (r < boardSize - 1 && Board.isEmpty(r + 1, c))  // abajo
-            moves[count++] = new int[]{r + 1, c};
-
-        if (c > 0 && Board.isEmpty(r, c - 1))              // izquierda
-            moves[count++] = new int[]{r, c - 1};
-
-        if (c < boardSize - 1 && Board.isEmpty(r, c + 1))  // derecha
-            moves[count++] = new int[]{r, c + 1};
-
-        int[][] result = new int[count][2];
-        for (int i = 0; i < count; i++) {
-            result[i] = moves[i];
-        }
-
-        return result;
-    }
 }

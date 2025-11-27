@@ -70,30 +70,4 @@ public class Killer extends Hero {
         System.out.println("🗡️ Asesino atacó a " + target.getSymbol() + " y le hizo " + totalDamage + " de daño. Sigue vivo.");
         return false;
     }
-    @Override
-
-    public int[][] validMoves(int boardSize) {
-        int[][] moves = new int[4][2];
-        int count = 0;
-        int r = getRow();
-        int c = getCol();
-
-        if (r - 2 >= 0 && c - 2 >= 0 && Board.isEmpty(r - 2, c - 2)) // arriba-izquierda
-            moves[count++] = new int[]{r - 2, c - 2};
-
-        if (r - 2 >= 0 && c + 2 < boardSize && Board.isEmpty(r - 2, c + 2)) // arriba-derecha
-            moves[count++] = new int[]{r - 2, c + 2};
-
-        if (r + 2 < boardSize && c - 2 >= 0 && Board.isEmpty(r + 2, c - 2)) // abajo-izquierda
-            moves[count++] = new int[]{r + 2, c - 2};
-
-        if (r + 2 < boardSize && c + 2 < boardSize && Board.isEmpty(r + 2, c + 2)) // abajo-derecha
-            moves[count++] = new int[]{r + 2, c + 2};
-
-        int[][] result = new int[count][2];
-        for (int i = 0; i < count; i++)
-            result[i] = moves[i];
-
-        return result;
-    }
 }

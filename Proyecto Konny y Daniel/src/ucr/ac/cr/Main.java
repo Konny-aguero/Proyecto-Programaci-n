@@ -2,6 +2,7 @@ package ucr.ac.cr;
 import java.util.Scanner;
 public class Main extends Board {
     public static void main(String[] args) {
+        Game game;
         Scanner sc = new Scanner(System.in);
         int size = 1;
         int heroIndex;
@@ -41,9 +42,12 @@ public class Main extends Board {
                     enemyHeroes = hero1;
                 }
 
-                Game game = new Game(size, player1, player2, hero1, hero2, activePlayer);
+                game = new Game(size, player1, player2, hero1, hero2, activePlayer);
                 game.guardarJson();
-            while (gameOn) {
+                game.exportToHTML();
+                System.out.println("Las partidas se guardaran automáticamente en: " + game.getPath());
+                System.out.println("Y se creará un reporte HTML automáticamente en: " + game.getPathHtml());
+                while (gameOn) {
                 Command action = getActionOfGame(activePlayer, player1, player2, sc);
                 switch (action.action) {
                     case "move": // Move hero
@@ -75,6 +79,7 @@ public class Main extends Board {
                                 }
                                 System.out.println("Paso de turno");
                                 update(game, activePlayer);
+                                game.exportToHTML();
                                 moved = true;
                             } else {
                                 showBoard(size);
@@ -112,6 +117,7 @@ public class Main extends Board {
                             game.setActiveplayer(activePlayer);
                             game.setActivegame(false);
                             game.guardarJson();
+                            game.exportToHTML();
                             break;
                         }
                     }
@@ -127,6 +133,7 @@ public class Main extends Board {
                     }
                     System.out.println("Paso de turno");
                     update(game, activePlayer);
+                    game.exportToHTML();
                     break;
                     case "stats": // Show stats
                     String heroe2 = action.parameters[0];
@@ -151,6 +158,7 @@ public class Main extends Board {
                     }
                     System.out.println("Paso de turno");
                     update(game, activePlayer);
+                    game.exportToHTML();
                     break;
 
                     case "retreat": //Retirada
@@ -165,6 +173,7 @@ public class Main extends Board {
                         game.setActiveplayer(activePlayer);
                         game.setActivegame(false);
                         game.guardarJson();
+                        game.exportToHTML();
                     break;
                     default:
                     System.out.println("Opción inválida.");
@@ -178,8 +187,6 @@ public class Main extends Board {
                 showHistory(); //show history of game
             break;
             case (4):
-            break; //finish code
-            case (5):
                 System.out.println("digite una opcion de juego a cargar (ejemplo: dani-vs-konny.json)");
                 String selectedRoute = sc.next();
                 Game game1 = Game.loadFromFile(selectedRoute);
@@ -207,9 +214,8 @@ public class Main extends Board {
                 }
                 showBoard(loadedSize);
                 resumeGame(game1, sc);
-            case (6):
-                System.out.println("xd");
-                //exportar a html
+            case (5):
+                break; //finish code
             default:
             System.out.println("opcion no valida");
         }
@@ -408,9 +414,8 @@ public class Main extends Board {
         System.out.println("              1. Iniciar nueva partida");
         System.out.println("              2. Ver instrucciones del juego");
         System.out.println("              3. Ver historia");
-        System.out.println("              4. Salir");
-        System.out.println("              5. Cargar partida");
-        System.out.println("              6. Exportar el juego a un archivo HTML");
+        System.out.println("              4. Cargar partida");
+        System.out.println("              5. Salir");
         System.out.println();
         System.out.print("Selecciona una opción: ");
     }
@@ -646,6 +651,7 @@ public class Main extends Board {
             }
         }
     }
+
 
     private static int selecHeroIndex (char letra){
         int heroIndex;

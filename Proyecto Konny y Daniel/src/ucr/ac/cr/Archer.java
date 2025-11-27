@@ -62,25 +62,4 @@ public class Archer extends Hero {
             return false;
         }
     }
-
-    @Override
-    public int[][] validMoves(int boardSize) {
-        int[][] moves = new int[8][2];
-        int count = 0;
-        for (int r = getRow() - 1; r <= getRow() + 1; r++) {
-            for (int c = getCol() - 1; c <= getCol() + 1; c++) {
-                if (r == getRow() && c == getCol()) continue;
-                if (r >= 0 && r < boardSize && c >= 0 && c < boardSize) {
-                    if (Board.isEmpty(r, c)) {
-                        moves[count][0] = r;
-                        moves[count][1] = c;
-                        count++;
-                    }
-                }
-            }
-        }
-        int[][] result = new int[count][2];
-        for (int i = 0; i < count; i++) result[i] = moves[i];
-        return result;
-    }
 }

@@ -63,10 +63,6 @@ public abstract class Hero {
         return false;
     }
 
-    public int[][] validMoves(int boardSize) {
-        return new int[0][0];
-    }
-
     public void takeDamage(int dmg) {
         this.hp = hp - dmg;
         if (this.hp < 0) this.hp = 0;

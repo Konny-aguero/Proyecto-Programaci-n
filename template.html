@@ -3,11 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="template.css">
-    <title>Arena de Héroes</title>
+    <title>Arena de Héroes - Reporte</title>
 </head>
 <body>
-    <h1>Reporte de la Arena de Héroes</h1>
-    <h2>Turno: {{turno_actual}}</h2>
+    <img src="images/titulo.webp" alt="Mi título" class="titulo-img">
+    <h3>Turno: {{turno_actual}}</h3>
     <h3>Jugadores: {{jugador_1}} vs {{jugador_2}}</h3>
+
+    <h2>Posiciones de los Héroes</h2>
+    <table>
+        {{tabla_posiciones}}
+    </table>
+
+    <h2>Estadísticas por jugador</h2>
+    <table>
+        {{tabla_estadisticas}}
+    </table>
 </body>
 </html>

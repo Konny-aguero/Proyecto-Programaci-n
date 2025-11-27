@@ -79,25 +79,4 @@ public class Wizard extends Hero {
         }
         return atacado;
     }
-
-    @Override
-    public int[][] validMoves(int boardSize) {
-        int[][] moves = new int[24][2]; // máximo 24 posiciones
-        int count = 0;
-        for (int r = getRow() - 2; r <= getRow() + 2; r++) {
-            for (int c = getCol() - 2; c <= getCol() + 2; c++) {
-                if (r == getRow() && c == getCol()) continue;
-                if (r >= 0 && r < boardSize && c >= 0 && c < boardSize) {
-                    if (Board.isEmpty(r, c)) {
-                        moves[count][0] = r;
-                        moves[count][1] = c;
-                        count++;
-                    }
-                }
-            }
-        }
-        int[][] result = new int[count][2];
-        for (int i = 0; i < count; i++) result[i] = moves[i];
-        return result;
-    }
 }
