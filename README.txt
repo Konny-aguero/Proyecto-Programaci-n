@@ -29,7 +29,7 @@ Notas:
  Contiene el metodo con todas las reglas y restriccioes para poder escribir el comando lineal
 
  * Game
- Contiene los metodos y variables necesarios para exportar el HTML, guardar la partida en un JSON y poder cargar el JSON
+ Contiene los metodos y variables necesarios para exportar el HTML, guardar la partida en un JSON, poder cargar el JSON y poder cargar el historial de movimientos
 
 - Ejemplos de uso (3 comandos típicos) -
 

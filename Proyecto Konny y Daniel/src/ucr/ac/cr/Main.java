@@ -1,4 +1,11 @@
 package ucr.ac.cr;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 public class Main extends Board {
     public static void main(String[] args) {
@@ -67,7 +74,7 @@ public class Main extends Board {
                             int oldCol = activeHeroes[(heroIndex)].getCol();
                             if (activeHeroes[(heroIndex)].move(row, column, size)) {
                                 replaceHeroOnBoard(oldRow, oldCol, size, activeHeroes[(heroIndex)]);
-
+                                game.movesHistory(action, activePlayer);
                                 if (activePlayer.equals(player1.getPlayerName())) {
                                     activePlayer = player2.getPlayerName();
                                     activeHeroes = hero2;
@@ -108,6 +115,7 @@ public class Main extends Board {
                         }
                     Hero heroe = activeHeroes[heroIndex];
                     boolean SuccefullAttack = ifTheHeroIsAWizard(heroe, enemyHeroes, enemyIndex);
+                        game.movesHistory(action, activePlayer);
                     if (SuccefullAttack) {
                         confirmDeath(enemyHeroes, enemyIndex);
                         boolean enemyAlive = false;
@@ -147,6 +155,7 @@ public class Main extends Board {
                     Stats.showStats(activeHeroes[heroIndex1]);
                     break;
                     case "pass":// skip turn
+                    game.movesHistory(action, activePlayer);
                     if (activePlayer.equals(player1.getPlayerName())) {
                         activePlayer = player2.getPlayerName();
                         activeHeroes = hero2;
@@ -162,6 +171,7 @@ public class Main extends Board {
                     break;
 
                     case "retreat": //Retirada
+                    game.movesHistory(action, activePlayer);
                     System.out.print(activePlayer + " se ha retirado, gana: ");
                     if (activePlayer.equals(player1.getPlayerName())) {
                         activePlayer = player2.getPlayerName();
@@ -214,7 +224,13 @@ public class Main extends Board {
                 }
                 showBoard(loadedSize);
                 resumeGame(game1, sc);
+                break;
             case (5):
+                System.out.println("Digite el nombre del archivo a revisar (ejemplo: dani-vs-konny-moves.json):");
+                String fileForHistory = sc.next();
+                readMovesFileAndPrint(fileForHistory);
+                break;
+            case (6):
                 break; //finish code
             default:
             System.out.println("opcion no valida");
@@ -415,7 +431,8 @@ public class Main extends Board {
         System.out.println("              2. Ver instrucciones del juego");
         System.out.println("              3. Ver historia");
         System.out.println("              4. Cargar partida");
-        System.out.println("              5. Salir");
+        System.out.println("              5. Historial de movimientos");
+        System.out.println("              6. Salir");
         System.out.println();
         System.out.print("Selecciona una opción: ");
     }
@@ -626,6 +643,30 @@ public class Main extends Board {
         } else {
             System.out.println("Personaje invalido inválido. Usa A, G, M, T o S. Intente nuevamente...");
             return -1;
+        }
+    }
+
+
+    private static void readMovesFileAndPrint(String path) {
+        File f = new File(path);
+        if (!f.exists()) {
+            System.out.println("Archivo no encontrado: " + path);
+            return;
+        }
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            List<String> moves = mapper.readValue(f, new TypeReference<List<String>>() {});
+            if (moves == null || moves.isEmpty()) {
+                System.out.println("No hay movimientos registrados en el archivo.");
+                return;
+            }
+            System.out.println("Historial de movimientos:");
+            int i = 1;
+            for (String m : moves) {
+                System.out.println(i++ + ". " + m);
+            }
+        } catch (Exception e) {
+            System.out.println("Error al leer el archivo de movimientos: " + e.getMessage());
         }
     }
 }

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Game {
@@ -19,6 +21,8 @@ public class Game {
     private boolean activegame;
     private String path;
     private String pathHtml;
+    private String pathHistoryMoves;
+    private List<String> movesHistory = new ArrayList<>();
 
     public Game() {
     }
@@ -35,6 +39,52 @@ public class Game {
 
         setPath(player1.getNameArmy() + "-vs-" + player2.getNameArmy()+ ".json");
         setPathHtml(player1.getNameArmy() + "-vs-" + player2.getNameArmy() + "-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss")) + ".html");
+        setPathHistoryMoves(player1.getNameArmy() + "-vs-" + player2.getNameArmy()+ "-moves.json");
+    }
+
+    public void movesHistory(Command cmd, String player) {
+        if (cmd == null) return;
+        String entry = "Turno " + this.getTurn() + " - " + player + " - " + cmd.toString();
+        movesHistory.add(entry);
+        try {
+            this.guardarJson();
+        } catch (Exception e) {
+            System.out.println("No se pudo guardar el JSON"+e.getMessage());
+        }
+
+        writeMovesJsonFile();
+    }
+
+    public List<String> getMovesHistory() {
+        return movesHistory;
+    }
+
+    public String getMovesHistoryJson() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            return mapper.writeValueAsString(movesHistory);
+        } catch (Exception e) {
+            return "[]";
+        }
+    }
+
+    private void writeMovesJsonFile() {
+        String basePath = this.getPath();
+        String movesPath;
+        if (basePath != null && basePath.endsWith(".json")) {
+            movesPath = basePath.replace(".json", "-moves.json");
+        } else {
+            movesPath = "moves-history.json";
+        }
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            mapper.writeValue(new File(movesPath), movesHistory);
+        } catch (IOException e) {
+            // no destruir ejecución por fallo al escribir el archivo de movimientos
+            e.printStackTrace();
+        }
     }
 
     public void guardarJson() {
@@ -230,5 +280,17 @@ public class Game {
 
     public void setPathHtml(String pathhtml) {
         this.pathHtml = pathhtml;
+    }
+
+    public void setMovesHistory(List<String> movesHistory) {
+        this.movesHistory = movesHistory;
+    }
+
+    public String getPathHistoryMoves() {
+        return pathHistoryMoves;
+    }
+
+    public void setPathHistoryMoves(String pathHistoryMoves) {
+        this.pathHistoryMoves = pathHistoryMoves;
     }
 }
