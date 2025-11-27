@@ -4,6 +4,8 @@ public class Main extends Board {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int size = 1;
+        int heroIndex;
+        int enemyIndex;
         boolean flag = true;
         showMainMenu();
         int option = 0;
@@ -40,10 +42,7 @@ public class Main extends Board {
                 }
 
                 Game game = new Game(size, player1, player2, hero1, hero2, activePlayer);
-
-
-
-            game.guardarJson();
+                game.guardarJson();
             while (gameOn) {
                 Command action = getActionOfGame(activePlayer, player1, player2, sc);
                 switch (action.action) {
@@ -51,20 +50,10 @@ public class Main extends Board {
                     boolean moved = false;
                     while (!moved) {
                         String heroe = action.parameters[0];
-                        int heroIndex;
+
                         char letra = Character.toUpperCase(heroe.charAt(0));
-                        if (letra == 'A') {
-                            heroIndex = 0;
-                        } else if (letra == 'G') {
-                            heroIndex = 1;
-                        } else if (letra == 'M') {
-                            heroIndex = 2;
-                        } else if (letra == 'T') {
-                            heroIndex = 3;
-                        } else if (letra == 'S') {
-                            heroIndex = 4;
-                        } else {
-                            System.out.println("Héroe inválido. Usa A, G, M, T o S. Intente nuevamente...");
+                        heroIndex = selecHeroIndex(letra);
+                        if (heroIndex==-1){
                             break;
                         }
                         try {
@@ -101,40 +90,17 @@ public class Main extends Board {
                     String heroe1 = action.parameters[0];
                     String enemy = action.parameters[1];
 
-                    int heroIndex;
-                    int enemyIndex;
-
                     char letra = Character.toUpperCase(heroe1.charAt(0));
-                    if (letra == 'A') {
-                        heroIndex = 0;
-                    } else if (letra == 'G') {
-                        heroIndex = 1;
-                    } else if (letra == 'M') {
-                        heroIndex = 2;
-                    } else if (letra == 'T') {
-                        heroIndex = 3;
-                    } else if (letra == 'S') {
-                        heroIndex = 4;
-                    } else {
-                        System.out.println("Héroe inválido. Usa A, G, M, T o S. Intente nuevamente...");
-                        break;
-                    }
+                        heroIndex = selecHeroIndex(letra);
+                        if (heroIndex<0){
+                            break;
+                        }
 
                     char letra1 = Character.toUpperCase(enemy.charAt(0));
-                    if (letra1 == 'A') {
-                        enemyIndex = 0;
-                    } else if (letra1 == 'G') {
-                        enemyIndex = 1;
-                    } else if (letra1 == 'M') {
-                        enemyIndex = 2;
-                    } else if (letra1 == 'T') {
-                        enemyIndex = 3;
-                    } else if (letra1 == 'S') {
-                        enemyIndex = 4;
-                    } else {
-                        System.out.println("Enemigo inválido. Usa A, G, M, T o S. Intente nuevamente...");
-                        break;
-                    }
+                        enemyIndex = selecEnemyIndex(letra1);
+                        if (enemyIndex<0) {
+                            break;
+                        }
                     Hero heroe = activeHeroes[heroIndex];
                     boolean SuccefullAttack = ifTheHeroIsAWizard(heroe, enemyHeroes, enemyIndex);
                     if (SuccefullAttack) {
@@ -166,20 +132,11 @@ public class Main extends Board {
                     String heroe2 = action.parameters[0];
                     int heroIndex1;
                     char letra2 = Character.toUpperCase(heroe2.charAt(0));
-                    if (letra2 == 'A') {
-                        heroIndex1 = 0;
-                    } else if (letra2 == 'G') {
-                        heroIndex1 = 1;
-                    } else if (letra2 == 'M') {
-                        heroIndex1 = 2;
-                    } else if (letra2 == 'T') {
-                        heroIndex1 = 3;
-                    } else if (letra2 == 'S') {
-                        heroIndex1 = 4;
-                    } else {
-                        System.out.println("Héroe inválido. Usa A, G, M, T o S. Intente nuevamente...");
-                        break;
-                    }
+
+                        heroIndex1 = selecHeroIndex(letra2);
+                        if (heroIndex1<0){
+                            break;
+                        }
                     Stats.showStats(activeHeroes[heroIndex1]);
                     break;
                     case "pass":// skip turn
@@ -215,16 +172,41 @@ public class Main extends Board {
             }
             break;
             case (2):
-            showInstructions(); //show instructions of game
+                showInstructions(); //show instructions of game
             break;
             case (3):
-            showHistory(); //show history of game
+                showHistory(); //show history of game
             break;
             case (4):
             break; //finish code
             case (5):
-                System.out.println("xd");
-                //cargar partida
+                System.out.println("digite una opcion de juego a cargar (ejemplo: dani-vs-konny.json)");
+                String selectedRoute = sc.next();
+                Game game1 = Game.loadFromFile(selectedRoute);
+                if (game1 == null || !game1.isActivegame()) {
+                    System.out.println("La partida no se pudo cargar o ya no está activa.");
+                    break;
+                }
+                int loadedSize = game1.getSize();
+                initBoard(loadedSize);
+                Hero[] h1 = game1.getHeroes1();
+                Hero[] h2 = game1.getHeroes2();
+                if (h1 != null) {
+                    for (Hero h : h1) {
+                        if (h != null && h.isAlive()) {
+                            board[h.getRow()][h.getCol()] = "[" + h.getSymbol() + "]";
+                        }
+                    }
+                }
+                if (h2 != null) {
+                    for (Hero h : h2) {
+                        if (h != null && h.isAlive()) {
+                            board[h.getRow()][h.getCol()] = "[" + h.getSymbol() + "]";
+                        }
+                    }
+                }
+                showBoard(loadedSize);
+                resumeGame(game1, sc);
             case (6):
                 System.out.println("xd");
                 //exportar a html
@@ -476,5 +458,228 @@ public class Main extends Board {
                 M = Mago
                 T = Tanque
                 S = Asesino""");
+    }
+
+    private static void resumeGame(Game game, Scanner sc) {
+        Players player1 = game.getPlayer1();
+        Players player2 = game.getPlayer2();
+        Hero[] hero1 = game.getHeroes1();
+        Hero[] hero2 = game.getHeroes2();
+        String activePlayer = game.getActiveplayer();
+        boolean gameOn = game.isActivegame();
+        Hero[] activeHeroes;
+        Hero[] enemyHeroes;
+        if (activePlayer.equals(player1.getPlayerName())) {
+            activeHeroes = hero1;
+            enemyHeroes = hero2;
+        } else {
+            activeHeroes = hero2;
+            enemyHeroes = hero1;
+        }
+
+        while (gameOn) {
+            Command action = getActionOfGame(activePlayer, player1, player2, sc);
+            switch (action.action) {
+                case "move":
+                    boolean moved = false;
+                    while (!moved) {
+                        String heroe = action.parameters[0];
+                        int heroIndex;
+                        char letra = Character.toUpperCase(heroe.charAt(0));
+                        if (letra == 'A') {
+                            heroIndex = 0;
+                        } else if (letra == 'G') {
+                            heroIndex = 1;
+                        } else if (letra == 'M') {
+                            heroIndex = 2;
+                        } else if (letra == 'T') {
+                            heroIndex = 3;
+                        } else if (letra == 'S') {
+                            heroIndex = 4;
+                        } else {
+                            System.out.println("Héroe inválido. Usa A, G, M, T o S. Intente nuevamente...");
+                            break;
+                        }
+                        try {
+                            int row = Integer.parseInt(action.parameters[1]) - 1;
+                            int column = Integer.parseInt(action.parameters[2]) - 1;
+                            int oldRow = activeHeroes[(heroIndex)].getRow();
+                            int oldCol = activeHeroes[(heroIndex)].getCol();
+                            if (activeHeroes[(heroIndex)].move(row, column, game.getSize())) {
+                                replaceHeroOnBoard(oldRow, oldCol, game.getSize(), activeHeroes[(heroIndex)]);
+
+                                if (activePlayer.equals(player1.getPlayerName())) {
+                                    activePlayer = player2.getPlayerName();
+                                    activeHeroes = hero2;
+                                    enemyHeroes = hero1;
+                                } else {
+                                    activePlayer = player1.getPlayerName();
+                                    activeHeroes = hero1;
+                                    enemyHeroes = hero2;
+                                }
+                                System.out.println("Paso de turno");
+                                update(game, activePlayer);
+                                moved = true;
+                            } else {
+                                showBoard(game.getSize());
+                                moved = true;
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Fila y columna deben ser números. Intente nuevamente...");
+                            break;
+                        }
+                    }
+                    break;
+                case "attack":
+                    String heroe1Str = action.parameters[0];
+                    String enemy = action.parameters[1];
+
+                    int heroIndex;
+                    int enemyIndex;
+
+                    char letra = Character.toUpperCase(heroe1Str.charAt(0));
+                    if (letra == 'A') {
+                        heroIndex = 0;
+                    } else if (letra == 'G') {
+                        heroIndex = 1;
+                    } else if (letra == 'M') {
+                        heroIndex = 2;
+                    } else if (letra == 'T') {
+                        heroIndex = 3;
+                    } else if (letra == 'S') {
+                        heroIndex = 4;
+                    } else {
+                        System.out.println("Héroe inválido. Usa A, G, M, T o S. Intente nuevamente...");
+                        break;
+                    }
+
+                    char letra1 = Character.toUpperCase(enemy.charAt(0));
+                    if (letra1 == 'A') {
+                        enemyIndex = 0;
+                    } else if (letra1 == 'G') {
+                        enemyIndex = 1;
+                    } else if (letra1 == 'M') {
+                        enemyIndex = 2;
+                    } else if (letra1 == 'T') {
+                        enemyIndex = 3;
+                    } else if (letra1 == 'S') {
+                        enemyIndex = 4;
+                    } else {
+                        System.out.println("Enemigo inválido. Usa A, G, M, T o S. Intente nuevamente...");
+                        break;
+                    }
+                    Hero heroe = activeHeroes[heroIndex];
+                    boolean SuccefullAttack = ifTheHeroIsAWizard(heroe, enemyHeroes, enemyIndex);
+                    if (SuccefullAttack) {
+                        confirmDeath(enemyHeroes, enemyIndex);
+                        boolean enemyAlive = false;
+                        enemyAlive = isEnemyAlive(enemyHeroes, enemyAlive);
+                        gameOn = ThePlayerWin(enemyAlive, activePlayer);
+                        if (!gameOn) {
+                            game.setActiveplayer(activePlayer);
+                            game.setActivegame(false);
+                            game.guardarJson();
+                            break;
+                        }
+                    }
+                    showBoard(game.getSize());
+                    if (activePlayer.equals(player1.getPlayerName())) {
+                        activePlayer = player2.getPlayerName();
+                        activeHeroes = hero2;
+                        enemyHeroes = hero1;
+                    } else {
+                        activePlayer = player1.getPlayerName();
+                        activeHeroes = hero1;
+                        enemyHeroes = hero2;
+                    }
+                    System.out.println("Paso de turno");
+                    update(game, activePlayer);
+                    break;
+                case "stats":
+                    String heroe2 = action.parameters[0];
+                    int heroIndex1;
+                    char letra2 = Character.toUpperCase(heroe2.charAt(0));
+                    if (letra2 == 'A') {
+                        heroIndex1 = 0;
+                    } else if (letra2 == 'G') {
+                        heroIndex1 = 1;
+                    } else if (letra2 == 'M') {
+                        heroIndex1 = 2;
+                    } else if (letra2 == 'T') {
+                        heroIndex1 = 3;
+                    } else if (letra2 == 'S') {
+                        heroIndex1 = 4;
+                    } else {
+                        System.out.println("Héroe inválido. Usa A, G, M, T o S. Intente nuevamente...");
+                        break;
+                    }
+                    Stats.showStats(activeHeroes[heroIndex1]);
+                    break;
+                case "pass":
+                    if (activePlayer.equals(player1.getPlayerName())) {
+                        activePlayer = player2.getPlayerName();
+                        activeHeroes = hero2;
+                        enemyHeroes = hero1;
+                    } else {
+                        activePlayer = player1.getPlayerName();
+                        activeHeroes = hero1;
+                        enemyHeroes = hero2;
+                    }
+                    System.out.println("Paso de turno");
+                    update(game, activePlayer);
+                    break;
+                case "retreat":
+                    System.out.print(activePlayer + " se ha retirado, gana: ");
+                    if (activePlayer.equals(player1.getPlayerName())) {
+                        activePlayer = player2.getPlayerName();
+                    } else {
+                        activePlayer = player1.getPlayerName();
+                    }
+                    System.out.print(activePlayer);
+                    gameOn = false;
+                    game.setActiveplayer(activePlayer);
+                    game.setActivegame(false);
+                    game.guardarJson();
+                    break;
+                default:
+                    System.out.println("Opción inválida.");
+            }
+        }
+    }
+
+    private static int selecHeroIndex (char letra){
+        int heroIndex;
+        if (letra == 'A') {
+           return heroIndex = 0;
+        } else if (letra == 'G') {
+           return heroIndex = 1;
+        } else if (letra == 'M') {
+           return heroIndex = 2;
+        } else if (letra == 'T') {
+           return heroIndex = 3;
+        } else if (letra == 'S') {
+            return heroIndex = 4;
+        } else {
+            System.out.println("Héroe inválido. Usa A, G, M, T o S. Intente nuevamente...");
+            return -1;
+        }
+    }
+
+    private static int selecEnemyIndex (char letra1){
+        int enemyIndex;
+        if (letra1 == 'A') {
+            return enemyIndex = 0;
+        } else if (letra1 == 'G') {
+            return enemyIndex = 1;
+        } else if (letra1 == 'M') {
+            return enemyIndex = 2;
+        } else if (letra1 == 'T') {
+            return enemyIndex = 3;
+        } else if (letra1 == 'S') {
+            return enemyIndex = 4;
+        } else {
+            System.out.println("Enemigo inválido. Usa A, G, M, T o S. Intente nuevamente...");
+            return -1;
+        }
     }
 }

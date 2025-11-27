@@ -1,4 +1,21 @@
 package ucr.ac.cr;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Archer.class, name = "archer"),
+        @JsonSubTypes.Type(value = Warrior.class, name = "warrior"),
+        @JsonSubTypes.Type(value = Wizard.class, name = "wizard"),
+        @JsonSubTypes.Type(value = Tank.class, name = "tank"),
+        @JsonSubTypes.Type(value = Killer.class, name = "killer")
+})
+
 public abstract class Hero {
     private int hp;
     private int row;
@@ -9,6 +26,21 @@ public abstract class Hero {
     private int kills;
     private int moves;
     private boolean placed = false;
+
+    public Hero(int hp, int row, int col, char symbol, int damageDealt, int damageTaken, int kills, int moves, boolean placed) {
+        this.hp = hp;
+        this.row = row;
+        this.col = col;
+        this.symbol = symbol;
+        this.damageDealt = damageDealt;
+        this.damageTaken = damageTaken;
+        this.kills = kills;
+        this.moves = moves;
+        this.placed = placed;
+    }
+
+    public Hero() {
+    }
 
     public boolean isPlaced() {
         return placed;
@@ -23,8 +55,13 @@ public abstract class Hero {
         this.symbol = symbol;
     }
 
-    public abstract boolean move(int newRow, int newCol, int boardSize);
-    public abstract boolean attack(Hero target);
+    public boolean move(int newRow, int newCol, int boardSize) {
+        return false;
+    }
+
+    public boolean attack(Hero target) {
+        return false;
+    }
 
     public int[][] validMoves(int boardSize) {
         return new int[0][0];

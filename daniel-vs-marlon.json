@@ -1,0 +1,125 @@
+{
+  "size" : 5,
+  "player1" : {
+    "nameArmy" : "daniel",
+    "playerName" : "Player 1"
+  },
+  "player2" : {
+    "nameArmy" : "marlon",
+    "playerName" : "Player 2"
+  },
+  "heroes1" : [ {
+    "type" : "archer",
+    "hp" : 5,
+    "row" : 1,
+    "col" : 0,
+    "symbol" : "A",
+    "damageDealt" : 11,
+    "damageTaken" : 5,
+    "kills" : 1,
+    "moves" : 1,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "warrior",
+    "hp" : 15,
+    "row" : 0,
+    "col" : 1,
+    "symbol" : "G",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "wizard",
+    "hp" : 8,
+    "row" : 0,
+    "col" : 2,
+    "symbol" : "M",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "tank",
+    "hp" : 20,
+    "row" : 0,
+    "col" : 3,
+    "symbol" : "T",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "killer",
+    "hp" : 9,
+    "row" : 0,
+    "col" : 4,
+    "symbol" : "S",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  } ],
+  "heroes2" : [ null, {
+    "type" : "warrior",
+    "hp" : 15,
+    "row" : 4,
+    "col" : 1,
+    "symbol" : "G",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "wizard",
+    "hp" : 8,
+    "row" : 4,
+    "col" : 2,
+    "symbol" : "M",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "tank",
+    "hp" : 20,
+    "row" : 4,
+    "col" : 3,
+    "symbol" : "T",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "killer",
+    "hp" : 9,
+    "row" : 4,
+    "col" : 4,
+    "symbol" : "S",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  } ],
+  "activeplayer" : "Player 2",
+  "turn" : 6,
+  "activegame" : true,
+  "path" : "daniel-vs-marlon.json"
+}

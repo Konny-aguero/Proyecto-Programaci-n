@@ -1,0 +1,137 @@
+{
+  "size" : 5,
+  "player1" : {
+    "nameArmy" : "dani",
+    "playerName" : "Player 1"
+  },
+  "player2" : {
+    "nameArmy" : "konny",
+    "playerName" : "Player 2"
+  },
+  "heroes1" : [ {
+    "type" : "archer",
+    "hp" : 10,
+    "row" : 1,
+    "col" : 0,
+    "symbol" : "A",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 1,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "warrior",
+    "hp" : 15,
+    "row" : 0,
+    "col" : 1,
+    "symbol" : "G",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "wizard",
+    "hp" : 8,
+    "row" : 0,
+    "col" : 2,
+    "symbol" : "M",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "tank",
+    "hp" : 20,
+    "row" : 0,
+    "col" : 3,
+    "symbol" : "T",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "killer",
+    "hp" : 9,
+    "row" : 0,
+    "col" : 4,
+    "symbol" : "S",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  } ],
+  "heroes2" : [ {
+    "type" : "archer",
+    "hp" : 10,
+    "row" : 4,
+    "col" : 0,
+    "symbol" : "A",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "warrior",
+    "hp" : 15,
+    "row" : 4,
+    "col" : 1,
+    "symbol" : "G",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "wizard",
+    "hp" : 8,
+    "row" : 4,
+    "col" : 2,
+    "symbol" : "M",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "tank",
+    "hp" : 20,
+    "row" : 4,
+    "col" : 3,
+    "symbol" : "T",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  }, {
+    "type" : "killer",
+    "hp" : 9,
+    "row" : 4,
+    "col" : 4,
+    "symbol" : "S",
+    "damageDealt" : 0,
+    "damageTaken" : 0,
+    "kills" : 0,
+    "moves" : 0,
+    "placed" : false,
+    "alive" : true
+  } ],
+  "activeplayer" : "Player 2",
+  "turn" : 2,
+  "activegame" : true,
+  "path" : "dani-vs-konny.json"
+}

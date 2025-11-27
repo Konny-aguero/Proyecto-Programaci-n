@@ -9,6 +9,14 @@ public class Players {
     private String nameArmy;
     private String playerName;
 
+    public Players(String nameArmy, String playerName) {
+        this.nameArmy = nameArmy;
+        this.playerName = playerName;
+    }
+
+    public Players() {
+    }
+
     public Players(String playerName) {
         this.playerName = playerName;
     }

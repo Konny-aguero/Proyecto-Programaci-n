@@ -1,8 +1,20 @@
 package ucr.ac.cr;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Tank extends Hero {
     public Tank(int hp, char symbol) {
         super(hp, symbol);
     }
+
+    public Tank(int hp, int row, int col, char symbol, int damageDealt, int damageTaken, int kills, int moves, boolean placed) {
+        super(hp, row, col, symbol, damageDealt, damageTaken, kills, moves, placed);
+    }
+
+    public Tank() {
+    }
+
     @Override
     public boolean move(int newRow, int newCol, int boardSize) {
 

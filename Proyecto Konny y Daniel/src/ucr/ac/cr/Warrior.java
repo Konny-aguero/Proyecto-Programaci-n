@@ -1,7 +1,18 @@
 package ucr.ac.cr;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Warrior extends Hero {
     public Warrior(int hp, char symbol) {
         super(hp, symbol);
+    }
+
+    public Warrior(int hp, int row, int col, char symbol, int damageDealt, int damageTaken, int kills, int moves, boolean placed) {
+        super(hp, row, col, symbol, damageDealt, damageTaken, kills, moves, placed);
+    }
+
+    public Warrior() {
     }
 
     @Override

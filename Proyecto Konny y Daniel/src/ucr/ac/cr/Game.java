@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.File;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 
 public class Game {
@@ -19,7 +17,8 @@ public class Game {
     private int turn;
     private boolean activegame;
     private String path;
-
+    public Game(){
+    }
 
     public Game(int size, Players player1, Players player2, Hero[] heroes1, Hero[] heroes2, String activeplayer) {
         this.size = size;
@@ -30,19 +29,15 @@ public class Game {
         this.activeplayer = activeplayer;
         this.turn = 1;
         this.activegame= true;
-
-        setPath(player1.getNameArmy() + "-vs-" + player2.getNameArmy() + "-" +
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss")) + ".json");
+        setPath(player1.getNameArmy() + "-vs-" + player2.getNameArmy()+ ".json");
     }
-
 
     public void guardarJson() {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             if (getPath() == null || getPath().isEmpty()) {
-                setPath(player1.getNameArmy() + "-vs-" + player2.getNameArmy() + "-" +
-                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss")) + ".json");
+                setPath(player1.getNameArmy() + "-vs-" + player2.getNameArmy()+ ".json");
             }
             mapper.writeValue(new File(getPath()), this);
             System.out.println("Partida guardada en: " + getPath());
@@ -51,58 +46,21 @@ public class Game {
         }
     }
 
-
-
-//    /** Carga un juego desde un archivo JSON */
-//    public static Game cargarDesdeArchivo(String ruta) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            Game juego = mapper.readValue(new File(ruta), Game.class);
-//            System.out.println("✅ Partida cargada desde: " + ruta);
-//            return juego;
-//        } catch (IOException e) {
-//            System.out.println("⚠ Error al cargar la partida: " + e.getMessage());
-//            return null;
-//        }
-//    }
-//
-//    /** Pasa el turno al siguiente jugador y guarda automáticamente el estado */
-//    public void pasarTurno() {
-//        turn++;
-//        activeplayer = activeplayer.equals(player1.getPlayerName())
-//                ? player2.getPlayerName()
-//                : player1.getPlayerName();
-//        System.out.println("➡ Turno #" + turn + " - Ahora juega: " + activeplayer);
-//        guardarEstado();
-//    }
-//
-//    /** Marca el juego como finalizado y guarda estado final */
-//    public void finalizarJuego(String ganador) {
-//        activegame = false;
-//        System.out.println("🏁 El juego ha finalizado. Ganador: " + ganador);
-//        guardarEstado();
-//    }
-//
-//    /** Marca que un jugador se ha rendido y guarda */
-//    public void rendirse(String jugadorQueSeRinde) {
-//        String ganador = jugadorQueSeRinde.equals(player1.getPlayerName())
-//                ? player2.getPlayerName()
-//                : player1.getPlayerName();
-//        System.out.println("🏳 " + jugadorQueSeRinde + " se ha rendido. Gana " + ganador);
-//        activegame = false;
-//        guardarEstado();
-//    }
-//
-//    // ===================== MÉTODOS AUXILIARES =====================
-//
-//    /** Genera un nombre único para el archivo de guardado */
-//    private String generarRutaArchivo() {
-//        String fecha = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
-//        String nombre = player1.getNameArmy() + "-vs-" + player2.getNameArmy() + "-" + fecha + ".json";
-//        return "partidas/" + nombre;
-//    }
-//
-
+    public static Game loadFromFile(String ruta) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            Game game = mapper.readValue(new File(ruta), Game.class);
+            if (game == null) {
+                System.out.println("Archivo inválido o vacío: ");
+                return null;
+            }
+            System.out.println("Partida cargada desde: " + ruta);
+            return game;
+        } catch (Exception e) {
+            System.out.println("Error al cargar la partida: " + e.getMessage());
+            return null;
+        }
+    }
 
     public int getSize() {
         return size;

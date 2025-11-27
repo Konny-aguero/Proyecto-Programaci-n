@@ -3,6 +3,10 @@ import java.util.Scanner;
 import static ucr.ac.cr.GameConfig.*;
 public class Board {
     static String[][] board;
+
+    public Board() {
+    }
+
     static void initBoard(int size) {
         board = new String[size][size];
         for (int row = 0; row < board.length; row++) {
